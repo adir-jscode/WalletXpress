@@ -1,14 +1,14 @@
+import { Outlet } from "react-router";
 import "./App.css";
-import { Button } from "./components/ui/button";
+import CommonLayout from "./layout/CommonLayout";
 
 function App() {
-  const handleClick = () => {
-    console.log("clicking.....");
-  };
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center">
-      <Button onClick={handleClick}>Click me</Button>
-    </div>
+    <>
+      <CommonLayout>
+        <Outlet></Outlet>
+      </CommonLayout>
+    </>
   );
 }
 
