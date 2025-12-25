@@ -18,7 +18,10 @@ import { ModeToggle } from "./ModeToggler";
 const navigationLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
-  { href: "/admin", label: "Admin" },
+  { href: "/features", label: "Features" },
+  { href: "/pricing", label: "Pricing" },
+  { href: "/contact", label: "Contact" },
+  { href: "/faq", label: "FAQ" },
 ];
 
 export default function Navbar() {
@@ -76,9 +79,14 @@ export default function Navbar() {
           </div>
           {/* Main nav */}
           <div className="flex items-center gap-6">
-            <a href="#" className="text-primary hover:text-primary/90">
+            <Link to={"/"} className="text-primary hover:text-primary/90">
               <Logo />
-            </a>
+            </Link>
+            <Link to={"/"} className="text-primary hover:text-primary/90">
+              <span className="text-lg font-bold text-primary hidden md:inline">
+                Digital Xpress
+              </span>
+            </Link>
             {/* Navigation menu */}
             <NavigationMenu className="h-full *:h-full max-md:hidden">
               <NavigationMenuList className="h-full gap-2">

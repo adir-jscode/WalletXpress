@@ -1,10 +1,12 @@
 import config from "@/config";
 import axios from "axios";
+
 export const axiosInstance = axios.create({
   baseURL: config.baseUrl,
+  withCredentials: true,
 });
 // Add a request interceptor
-axios.interceptors.request.use(
+axiosInstance.interceptors.request.use(
   function (config) {
     // Do something before request is sent
     return config;
@@ -12,13 +14,13 @@ axios.interceptors.request.use(
   function (error) {
     // Do something with request error
     return Promise.reject(error);
-  },
-  { synchronous: true, runWhen: () => /* This function returns true */ true }
+  }
 );
 
 // Add a response interceptor
-axios.interceptors.response.use(
+axiosInstance.interceptors.response.use(
   function onFulfilled(response) {
+    console.log(response);
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
     return response;
