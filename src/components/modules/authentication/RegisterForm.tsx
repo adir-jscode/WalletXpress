@@ -102,14 +102,15 @@ export function RegisterForm({
       role: data.role,
     };
     try {
-      const response = await register(userInfo);
+      const response = await register(userInfo).unwrap();
+      console.log("res = ", response);
       if (response?.data?.statusCode === 201) {
         toast.success("Registration successful!");
         navigate("/verify");
       }
     } catch (error) {
-      toast.error(error.error.data.message);
-      console.log("catch hitted");
+      console.log(error);
+      toast.error(error.data.message);
     }
   };
   return (

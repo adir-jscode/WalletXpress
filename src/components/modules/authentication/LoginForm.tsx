@@ -1,5 +1,3 @@
-"use client";
-
 import type React from "react";
 
 import { Button } from "@/components/ui/button";
@@ -50,6 +48,12 @@ export function LoginForm({
       console.log("RESPONSE", res);
       if (res.success === true && res.data.user.role === "ADMIN") {
         navigate("/admin");
+        toast.success("Login successful");
+      } else if (res.success === true && res.data.user.role === "USER") {
+        navigate("/user");
+        toast.success("Login successful");
+      } else {
+        navigate("/agent");
         toast.success("Login successful");
       }
 

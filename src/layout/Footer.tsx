@@ -1,5 +1,3 @@
-"use client";
-
 import Logo from "@/components/logo";
 import { ArrowRight, Mail, MapPin, Phone } from "lucide-react";
 import { useNavigate } from "react-router";

@@ -1,22 +1,38 @@
-import {
-  default as Analytics,
-  default as Transaction,
-} from "@/pages/Admin/Transaction";
 import type { ISidebarItems } from "@/types";
 
 export const adminSideBarItems: ISidebarItems[] = [
   {
-    title: "Admin",
+    title: "Dashboard",
     items: [
       {
-        title: "Analysis",
-        url: "/admin/analytics",
-        component: Analytics,
+        title: "Overview",
+        url: "/admin/dashboard",
+        //component: AdminDashboard,
+      },
+    ],
+  },
+  {
+    title: "Management",
+    items: [
+      {
+        title: "Users",
+        url: "/admin/users",
+        //component: AdminUsers,
+      },
+      {
+        title: "Agents",
+        url: "/admin/agents",
+        //component: AdminAgents,
+      },
+      {
+        title: "Wallets",
+        url: "/admin/wallets",
+        //component: AdminWallets,
       },
       {
         title: "Transactions",
-        url: "/admin/analytics",
-        component: Transaction,
+        url: "/admin/transactions",
+        //component: AdminTransactions,
       },
     ],
   },

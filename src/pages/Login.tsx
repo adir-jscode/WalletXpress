@@ -1,5 +1,3 @@
-"use client";
-
 import WalletLogin from "@/assets/images/wallet-login.jpeg";
 import Logo from "@/components/logo";
 import { LoginForm } from "@/components/modules/authentication/LoginForm";
