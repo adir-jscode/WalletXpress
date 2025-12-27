@@ -1,3 +1,5 @@
+"use client";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -7,22 +9,21 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useBlockUnblockWalletMutation } from "@/redux/features/admin/admin.api";
-import { useGetAllUsersQuery } from "@/redux/features/user/user.api";
-import { Lock, Mail, Phone, Unlock } from "lucide-react";
+import { useApproveSuspendAgentMutation } from "@/redux/features/admin/admin.api";
+import { useGetAllAgentsQuery } from "@/redux/features/user/user.api";
+import { CheckCircle, Mail, Phone, XCircle } from "lucide-react";
 import { toast } from "sonner";
 
-export default function Users() {
-  const { data: usersData, isLoading } = useGetAllUsersQuery();
-  const [blockUnblock] = useBlockUnblockWalletMutation();
+export default function Agents() {
+  const { data: agentsData, isLoading } = useGetAllAgentsQuery();
+  const [approveSuspend] = useApproveSuspendAgentMutation();
 
-  const users = usersData?.data || [];
-  console.log(users);
+  const agents = agentsData?.data || [];
 
-  const handleBlockUnblock = async (userId: string, currentStatus: boolean) => {
+  const handleApproveSuspend = async (agentId: string, isBlocked: boolean) => {
     try {
-      await blockUnblock({ id: userId }).unwrap();
-      toast.success(currentStatus ? "User unblocked" : "User blocked");
+      await approveSuspend({ id: agentId }).unwrap();
+      toast.success(isBlocked ? "Agent activated" : "Agent suspended");
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("Action failed");
@@ -33,58 +34,56 @@ export default function Users() {
     <div className="space-y-4">
       <Card>
         <CardHeader>
-          <CardTitle>All Users</CardTitle>
-          <CardDescription>
-            Manage system users and their wallets
-          </CardDescription>
+          <CardTitle>Agent Management</CardTitle>
+          <CardDescription>Manage agents and their commissions</CardDescription>
         </CardHeader>
         <CardContent>
           {isLoading ? (
             <div>Loading...</div>
-          ) : users.length === 0 ? (
+          ) : agents.length === 0 ? (
             <div className="text-center text-muted-foreground">
-              No users found
+              No agents found
             </div>
           ) : (
             <div className="space-y-3">
-              {users
-                .filter((user) => user.role === "USER")
-                .map((user) => (
+              {agents
+                .filter((agent) => agent.role === "agent")
+                .map((agent) => (
                   <div
-                    key={user._id}
+                    key={agent._id}
                     className="flex items-center justify-between p-4 border rounded-lg"
                   >
                     <div className="flex-1">
-                      <p className="font-medium">{user.name}</p>
+                      <p className="font-medium">{agent.name}</p>
                       <div className="flex flex-col gap-2 mt-2 text-sm text-muted-foreground">
                         <div className="flex items-center gap-2">
                           <Mail size={14} />
-                          {user.email}
+                          {agent.email}
                         </div>
                         <div className="flex items-center gap-2">
                           <Phone size={14} />
-                          {user.phone}
+                          {agent.phone}
                         </div>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
                       <Badge
-                        variant={user.isBlocked ? "destructive" : "default"}
+                        variant={agent.isBlocked ? "destructive" : "default"}
                       >
-                        {user.isBlocked ? "Blocked" : "Active"}
+                        {agent.isBlocked ? "Suspended" : "Active"}
                       </Badge>
-                      <Badge variant="outline">{user.role}</Badge>
+                      <Badge variant="outline">{agent.role}</Badge>
                       <Button
                         size="sm"
                         variant="outline"
                         onClick={() =>
-                          handleBlockUnblock(user._id, user.isBlocked)
+                          handleApproveSuspend(agent._id, agent.isBlocked)
                         }
                       >
-                        {user.isBlocked ? (
-                          <Unlock size={16} />
+                        {agent.isBlocked ? (
+                          <CheckCircle size={16} className="text-green-600" />
                         ) : (
-                          <Lock size={16} />
+                          <XCircle size={16} className="text-red-600" />
                         )}
                       </Button>
                     </div>

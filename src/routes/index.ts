@@ -9,9 +9,12 @@ import Login from "@/pages/Login";
 import Pricing from "@/pages/Pricing";
 import Register from "@/pages/Register";
 import Verify from "@/pages/Verify";
+import VerifyOtp from "@/pages/verifyOtp";
 import { generateRoutes } from "@/utils/generateRoutes";
 import { createBrowserRouter } from "react-router";
 import { adminSideBarItems } from "./adminSideBarItems";
+import { agentSideBarItems } from "./agentSideBarItems";
+import { userSideBarItems } from "./userSideBarItems";
 
 export const router = createBrowserRouter([
   {
@@ -42,6 +45,10 @@ export const router = createBrowserRouter([
         Component: About,
         path: "/about",
       },
+      {
+        Component: VerifyOtp,
+        path: "/verify-otp",
+      },
     ],
   },
   {
@@ -52,12 +59,12 @@ export const router = createBrowserRouter([
   {
     Component: DashboardLayout,
     path: "/user",
-    children: [{}],
+    children: [...generateRoutes(userSideBarItems)],
   },
   {
     Component: DashboardLayout,
     path: "/agent",
-    children: [{}],
+    children: [...generateRoutes(agentSideBarItems)],
   },
   {
     Component: Login,

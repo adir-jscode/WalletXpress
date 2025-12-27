@@ -1,3 +1,8 @@
+import Agents from "@/pages/Admin/Agents";
+import Dashboard from "@/pages/Admin/Dashboard";
+import Transactions from "@/pages/Admin/Transaction";
+import Users from "@/pages/Admin/Users";
+import Wallets from "@/pages/Admin/Wallets";
 import type { ISidebarItems } from "@/types";
 
 export const adminSideBarItems: ISidebarItems[] = [
@@ -7,7 +12,7 @@ export const adminSideBarItems: ISidebarItems[] = [
       {
         title: "Overview",
         url: "/admin/dashboard",
-        //component: AdminDashboard,
+        component: Dashboard,
       },
     ],
   },
@@ -17,21 +22,22 @@ export const adminSideBarItems: ISidebarItems[] = [
       {
         title: "Users",
         url: "/admin/users",
-        //component: AdminUsers,
+        component: Users,
       },
       {
         title: "Agents",
         url: "/admin/agents",
-        //component: AdminAgents,
+        component: Agents,
       },
       {
         title: "Wallets",
         url: "/admin/wallets",
-        //component: AdminWallets,
+        component: Wallets,
       },
       {
         title: "Transactions",
         url: "/admin/transactions",
+        component: Transactions,
         //component: AdminTransactions,
       },
     ],
