@@ -8,10 +8,12 @@ import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import Pricing from "@/pages/Pricing";
 import Register from "@/pages/Register";
+import Unauthorized from "@/pages/Unauthorized";
 import Verify from "@/pages/Verify";
 import VerifyOtp from "@/pages/verifyOtp";
 import { generateRoutes } from "@/utils/generateRoutes";
-import { createBrowserRouter } from "react-router";
+import { withAuth } from "@/utils/withAuth";
+import { createBrowserRouter, Navigate } from "react-router";
 import { adminSideBarItems } from "./adminSideBarItems";
 import { agentSideBarItems } from "./agentSideBarItems";
 import { userSideBarItems } from "./userSideBarItems";
@@ -52,19 +54,28 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    Component: DashboardLayout,
+    Component: withAuth(DashboardLayout, "ADMIN"),
     path: "/admin",
-    children: [...generateRoutes(adminSideBarItems)],
+    children: [
+      { index: true, element: <Navigate to="/admin/dashboard" /> },
+      ...generateRoutes(adminSideBarItems),
+    ],
   },
   {
-    Component: DashboardLayout,
+    Component: withAuth(DashboardLayout, "USER"),
     path: "/user",
-    children: [...generateRoutes(userSideBarItems)],
+    children: [
+      { index: true, element: <Navigate to="/user/dashboard" /> },
+      ...generateRoutes(userSideBarItems),
+    ],
   },
   {
-    Component: DashboardLayout,
+    Component: withAuth(DashboardLayout, "AGENT"),
     path: "/agent",
-    children: [...generateRoutes(agentSideBarItems)],
+    children: [
+      { index: true, element: <Navigate to="/agent/dashboard" /> },
+      ...generateRoutes(agentSideBarItems),
+    ],
   },
   {
     Component: Login,
@@ -77,5 +88,9 @@ export const router = createBrowserRouter([
   {
     Component: Verify,
     path: "/verify",
+  },
+  {
+    Component: Unauthorized,
+    path: "/unauthorized",
   },
 ]);

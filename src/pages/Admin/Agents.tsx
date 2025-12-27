@@ -19,6 +19,7 @@ export default function Agents() {
   const [approveSuspend] = useApproveSuspendAgentMutation();
 
   const agents = agentsData?.data || [];
+  console.log(agents);
 
   const handleApproveSuspend = async (agentId: string, isBlocked: boolean) => {
     try {
@@ -47,7 +48,7 @@ export default function Agents() {
           ) : (
             <div className="space-y-3">
               {agents
-                .filter((agent) => agent.role === "agent")
+                .filter((agent) => agent.role === "AGENT")
                 .map((agent) => (
                   <div
                     key={agent._id}

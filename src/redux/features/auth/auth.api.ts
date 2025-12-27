@@ -1,6 +1,6 @@
 import { baseApi } from "@/redux/baseApi";
 
-const authApi = baseApi.injectEndpoints({
+export const authApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     login: build.mutation({
       query: (credentials) => ({
@@ -16,11 +16,12 @@ const authApi = baseApi.injectEndpoints({
         data: userInfo,
       }),
     }),
-    logout: build.mutation<{ success: boolean }, void>({
+    logout: build.mutation({
       query: () => ({
         url: "/auth/logout",
         method: "POST",
       }),
+      invalidatesTags: ["USER"],
     }),
     changePassword: build.mutation<
       { success: boolean },

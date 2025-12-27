@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   Sidebar,
   SidebarContent,
@@ -11,15 +10,20 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import Logo from "./logo";
+import { useGetUserInfoQuery } from "@/redux/features/user/user.api";
+import { getSideBarItems } from "@/utils/getSideBarItems";
+import * as React from "react";
 import { Link } from "react-router";
-import { adminSideBarItems } from "@/routes/adminSideBarItems";
-
-const data = {
-  navMain: adminSideBarItems,
-};
+import Logo from "./logo";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  //user info
+  const { data: userInfo } = useGetUserInfoQuery();
+  console.log(userInfo);
+
+  const data = {
+    navMain: getSideBarItems(userInfo?.data.role),
+  };
   return (
     <Sidebar {...props}>
       <SidebarHeader>

@@ -34,8 +34,8 @@ export default function SendMoney() {
 
     try {
       await sendMoney({
-        receiver: formData.receiver,
-        amount: Number.parseFloat(formData.amount),
+        phone: formData.receiver,
+        balance: Number.parseFloat(formData.amount),
       }).unwrap();
       toast.success("Money sent successfully");
       navigate("/user/dashboard");

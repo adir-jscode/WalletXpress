@@ -18,6 +18,7 @@ import { toast } from "sonner";
 
 export default function Verify() {
   const location = useLocation();
+  console.log(location.state);
   const navigate = useNavigate();
   const [phone] = useState(location.state);
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);

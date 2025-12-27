@@ -11,6 +11,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { authApi, useLogoutMutation } from "@/redux/features/auth/auth.api";
+import { useGetUserInfoQuery } from "@/redux/features/user/user.api";
+import { useAppDispatch } from "@/redux/hook";
 import { Link } from "react-router";
 import { ModeToggle } from "./ModeToggler";
 
@@ -25,6 +28,14 @@ const navigationLinks = [
 ];
 
 export default function Navbar() {
+  //user info
+  const { data: userInfo } = useGetUserInfoQuery(undefined);
+  const dispatch = useAppDispatch();
+  const [logout] = useLogoutMutation();
+  const handleLogout = async () => {
+    await logout(undefined).unwrap();
+    dispatch(authApi.util.resetApiState());
+  };
   return (
     <header className="border-b px-4 md:px-6">
       <div className="flex h-16 justify-between gap-4">
@@ -107,9 +118,22 @@ export default function Navbar() {
           <Button asChild variant="ghost" size="sm" className="text-sm">
             <Link to={"/register"}>Register</Link>
           </Button>
-          <Button asChild size="sm" className="text-sm">
-            <Link to={"/login"}>Login</Link>
-          </Button>
+          {userInfo?.data ? (
+            <>
+              <Button asChild size="sm" className="text-sm">
+                <Link to={"/dashboard"}>Dashboard</Link>
+              </Button>
+
+              {/* implement logout */}
+              <Button size="sm" className="text-sm" onClick={handleLogout}>
+                Logout
+              </Button>
+            </>
+          ) : (
+            <Button asChild size="sm" className="text-sm">
+              <Link to={"/login"}>Login</Link>
+            </Button>
+          )}
         </div>
       </div>
     </header>

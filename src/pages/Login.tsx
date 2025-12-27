@@ -25,7 +25,49 @@ export default function Login() {
 
             {/* Form */}
             <LoginForm />
-
+            {/* admin credentials clipboard */}
+            <div className="text-sm text-slate-500 dark:text-slate-400 p-3 border border-slate-200 dark:border-slate-700 rounded">
+              <p>
+                <strong>Admin Credentials:</strong>
+              </p>
+              <p>
+                Phone: <code>1819440126</code>
+                {/* copy phone number */}
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText("+8801819440126");
+                  }}
+                  className="ml-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-semibold"
+                >
+                  Copy
+                </button>
+              </p>
+              <p>
+                Password: <code>SecurePass123!</code>
+                {/* copy password */}
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText("SecurePass123!");
+                  }}
+                  className="ml-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-semibold"
+                >
+                  Copy
+                </button>
+              </p>
+              {/* options to copy text */}
+              <div className="mt-2">
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      "Phone: +1234567890\nPassword: Admin@123"
+                    );
+                  }}
+                  className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-semibold"
+                >
+                  Copy Credentials
+                </button>
+              </div>
+            </div>
             {/* Security Features */}
             <div className="space-y-3 pt-4">
               <p className="text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wide">

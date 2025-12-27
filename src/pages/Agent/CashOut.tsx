@@ -34,11 +34,11 @@ export default function CashOut() {
 
     try {
       await withdraw({
-        amount: Number.parseFloat(formData.amount),
-        initiator: formData.customerPhone,
+        balance: Number.parseFloat(formData.amount),
+        phone: formData.customerPhone,
       }).unwrap();
       toast.success("Cash-out successful");
-      navigate("/agent/dashboard");
+      navigate("/user/dashboard");
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("Cash-out failed");
@@ -50,12 +50,12 @@ export default function CashOut() {
       <Card>
         <CardHeader>
           <CardTitle>Cash-Out</CardTitle>
-          <CardDescription>Withdraw money from customer wallet</CardDescription>
+          <CardDescription>Cash out money from wallet</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <Label htmlFor="customerPhone">Customer Phone</Label>
+              <Label htmlFor="customerPhone">Agent Phone</Label>
               <Input
                 id="customerPhone"
                 placeholder="Enter customer phone number"
@@ -87,7 +87,7 @@ export default function CashOut() {
             <Button
               type="button"
               variant="outline"
-              onClick={() => navigate("/agent/dashboard")}
+              onClick={() => navigate("/user/dashboard")}
               className="w-full"
             >
               Cancel

@@ -9,6 +9,13 @@ const userApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    getUserInfo: build.query<{ data: IUser }, void>({
+      query: () => ({
+        url: "/user/me",
+        method: "GET",
+      }),
+      providesTags: ["USER"],
+    }),
     getAllAgents: build.query<{ data: IUser[] }, void>({
       query: () => ({
         url: "/user/agents",
@@ -18,4 +25,8 @@ const userApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetAllUsersQuery, useGetAllAgentsQuery } = userApi;
+export const {
+  useGetAllUsersQuery,
+  useGetAllAgentsQuery,
+  useGetUserInfoQuery,
+} = userApi;
