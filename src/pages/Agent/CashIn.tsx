@@ -34,8 +34,8 @@ export default function CashIn() {
 
     try {
       await addMoney({
-        balance: Number.parseFloat(formData.amount),
         phone: formData.customerPhone,
+        balance: Number.parseFloat(formData.amount),
       }).unwrap();
       toast.success("Cash-in successful");
       navigate("/agent/dashboard");

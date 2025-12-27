@@ -9,8 +9,7 @@ import Login from "@/pages/Login";
 import Pricing from "@/pages/Pricing";
 import Register from "@/pages/Register";
 import Unauthorized from "@/pages/Unauthorized";
-import Verify from "@/pages/Verify";
-import VerifyOtp from "@/pages/verifyOtp";
+
 import { generateRoutes } from "@/utils/generateRoutes";
 import { withAuth } from "@/utils/withAuth";
 import { createBrowserRouter, Navigate } from "react-router";
@@ -47,10 +46,6 @@ export const router = createBrowserRouter([
         Component: About,
         path: "/about",
       },
-      {
-        Component: VerifyOtp,
-        path: "/verify-otp",
-      },
     ],
   },
   {
@@ -85,10 +80,7 @@ export const router = createBrowserRouter([
     Component: Register,
     path: "/register",
   },
-  {
-    Component: Verify,
-    path: "/verify",
-  },
+
   {
     Component: Unauthorized,
     path: "/unauthorized",

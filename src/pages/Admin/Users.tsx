@@ -17,7 +17,6 @@ export default function Users() {
   const [blockUnblock] = useBlockUnblockWalletMutation();
 
   const users = usersData?.data || [];
-  console.log(users);
 
   const handleBlockUnblock = async (userId: string, currentStatus: boolean) => {
     try {

@@ -118,10 +118,21 @@ export default function Navbar() {
           <Button asChild variant="ghost" size="sm" className="text-sm">
             <Link to={"/register"}>Register</Link>
           </Button>
-          {userInfo?.data ? (
+          {userInfo?.data.role ? (
             <>
-              <Button asChild size="sm" className="text-sm">
-                <Link to={"/dashboard"}>Dashboard</Link>
+              {/* dashboard based on role */}
+              <Button asChild variant="ghost" size="sm" className="text-sm">
+                <Link
+                  to={
+                    userInfo?.data.role === "ADMIN"
+                      ? "/admin/dashboard"
+                      : userInfo?.data.role === "USER"
+                      ? "/user/dashboard"
+                      : "/agent/dashboard"
+                  }
+                >
+                  Dashboard
+                </Link>
               </Button>
 
               {/* implement logout */}

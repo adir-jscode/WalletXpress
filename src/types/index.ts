@@ -57,9 +57,8 @@ export interface ILoginResponse {
 }
 
 export interface IWalletAction {
-  amount: number;
-  initiator?: string;
-  receiver?: string;
+  phone: string;
+  balance: number;
 }
 
 export type TRole = "ADMIN" | "USER" | "AGENT";

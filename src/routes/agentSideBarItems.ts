@@ -1,5 +1,4 @@
 import CashIn from "@/pages/Agent/CashIn";
-import Customers from "@/pages/Agent/Customers";
 import AgentDashboard from "@/pages/Agent/Dashboard";
 import type { ISidebarItems } from "@/types";
 
@@ -23,16 +22,16 @@ export const agentSideBarItems: ISidebarItems[] = [
         component: CashIn,
       },
 
-      {
-        title: "Customers",
-        url: "/agent/customers",
-        component: Customers,
-      },
-      {
-        title: "Commission",
-        url: "/agent/commission",
-        //component: Commission,
-      },
+      // {
+      //   title: "Customers",
+      //   url: "/agent/customers",
+      //   component: Customers,
+      // },
+      // {
+      //   title: "Commission",
+      //   url: "/agent/commission",
+      //   //component: Commission,
+      // },
     ],
   },
 ];

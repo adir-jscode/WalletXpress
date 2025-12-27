@@ -29,16 +29,6 @@ const walletApi = baseApi.injectEndpoints({
         data,
       }),
     }),
-    sendMoney: build.mutation<
-      { data: ITransaction },
-      IWalletAction & { receiver: string }
-    >({
-      query: (data) => ({
-        url: "/wallet/send-money",
-        method: "PATCH",
-        data,
-      }),
-    }),
   }),
 });
 
@@ -47,5 +37,4 @@ export const {
   useGetAllWalletsQuery,
   useAddMoneyMutation,
   useWithdrawMoneyMutation,
-  useSendMoneyMutation,
 } = walletApi;

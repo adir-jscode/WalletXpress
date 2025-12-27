@@ -45,14 +45,8 @@ export function LoginForm({
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
     try {
       const res = await login(data).unwrap();
-      if (res.success === true && res.data.user.role === "ADMIN") {
-        navigate("/admin/dashboard");
-        toast.success("Login successful");
-      } else if (res.success === true && res.data.user.role === "USER") {
-        navigate("/user/dashboard");
-        toast.success("Login successful");
-      } else {
-        navigate("/agent/dashboard");
+      if (res.success === true) {
+        navigate("/");
         toast.success("Login successful");
       }
 

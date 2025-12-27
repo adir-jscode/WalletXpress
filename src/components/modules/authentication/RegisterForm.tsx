@@ -103,13 +103,13 @@ export function RegisterForm({
     };
     try {
       const response = await register(userInfo).unwrap();
-      console.log("res = ", response);
+
       if (response?.data?.statusCode === 201) {
         toast.success("Registration successful!");
         navigate("/verify");
       }
-    } catch (error) {
-      console.log(error);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       toast.error(error.data.message);
     }
   };

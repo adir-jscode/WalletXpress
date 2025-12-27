@@ -65,6 +65,11 @@ export default function Transactions() {
                     {getTransactionIcon(tx.type)}
                     <div>
                       <p className="font-medium capitalize">{tx.type}</p>
+                      {/* <p className="font-medium capitalize">
+                        <span className="text-yellow-500">
+                          Initiator : {tx?.initiator?.name as string}
+                        </span>
+                      </p> */}
                       <p className="text-sm text-muted-foreground">
                         {new Date(tx.createdAt).toLocaleDateString()}
                       </p>

@@ -19,7 +19,6 @@ export default function Agents() {
   const [approveSuspend] = useApproveSuspendAgentMutation();
 
   const agents = agentsData?.data || [];
-  console.log(agents);
 
   const handleApproveSuspend = async (agentId: string, isBlocked: boolean) => {
     try {
