@@ -1,5 +1,6 @@
-import CashOut from "@/pages/Agent/CashOut";
+import CashOut from "@/pages/User/CashOut";
 import UserDashboard from "@/pages/User/Dashboard";
+import SendMoney from "@/pages/User/SendMoney";
 import Transactions from "@/pages/User/Transactions";
 import type { ISidebarItems } from "@/types";
 
@@ -17,17 +18,11 @@ export const userSideBarItems: ISidebarItems[] = [
   {
     title: "Transactions",
     items: [
-      // {
-      //   title: "Add Money",
-      //   url: "/user/add-money",
-      //   component: AddMoney,
-      // },
-
-      // {
-      //   title: "Withdraw",
-      //   url: "/user/withdraw",
-      //   component: Withdraw,
-      // },
+      {
+        title: "Send Money",
+        url: "/user/send-money",
+        component: SendMoney,
+      },
       {
         title: "Cash-Out",
         url: "/user/cash-out",

@@ -39,9 +39,9 @@ export default function CashOut() {
       }).unwrap();
       toast.success("Cash-out successful");
       navigate("/user/dashboard");
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      toast.error("Cash-out failed");
+      console.log(error);
+      toast.error(error?.data?.message || "Cash-out failed");
     }
   };
 

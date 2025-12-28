@@ -1,3 +1,5 @@
+"use client";
+
 import Logo from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,30 +14,41 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { authApi, useLogoutMutation } from "@/redux/features/auth/auth.api";
+import { logout as logoutAction } from "@/redux/features/auth/auth.slice";
 import { useGetUserInfoQuery } from "@/redux/features/user/user.api";
 import { useAppDispatch } from "@/redux/hook";
-import { Link } from "react-router";
+import { useNavigate } from "react-router";
+import { toast } from "sonner";
 import { ModeToggle } from "./ModeToggler";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
   { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
   { href: "/features", label: "Features" },
   { href: "/pricing", label: "Pricing" },
-  { href: "/contact", label: "Contact" },
+  { href: "/about", label: "About" },
   { href: "/faq", label: "FAQ" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export default function Navbar() {
-  //user info
+  const navigate = useNavigate();
   const { data: userInfo } = useGetUserInfoQuery(undefined);
-  const dispatch = useAppDispatch();
   const [logout] = useLogoutMutation();
+  const dispatch = useAppDispatch();
+
   const handleLogout = async () => {
-    await logout(undefined).unwrap();
-    dispatch(authApi.util.resetApiState());
+    try {
+      await logout(undefined).unwrap();
+      dispatch(logoutAction());
+      dispatch(authApi.util.resetApiState());
+      navigate("/login");
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      toast.error("Failed to logout. Please try again.");
+    }
   };
+
   return (
     <header className="border-b px-4 md:px-6">
       <div className="flex h-16 justify-between gap-4">
@@ -79,7 +92,12 @@ export default function Navbar() {
                     {navigationLinks.map((link, index) => (
                       <NavigationMenuItem key={index} className="w-full">
                         <NavigationMenuLink className="py-1.5">
-                          <Link to={link.href}>{link.label}</Link>
+                          <button
+                            onClick={() => navigate(link.href)}
+                            className="w-full text-left"
+                          >
+                            {link.label}
+                          </button>
                         </NavigationMenuLink>
                       </NavigationMenuItem>
                     ))}
@@ -90,21 +108,32 @@ export default function Navbar() {
           </div>
           {/* Main nav */}
           <div className="flex items-center gap-6">
-            <Link to={"/"} className="text-primary hover:text-primary/90">
+            <button
+              onClick={() => navigate("/")}
+              className="text-primary hover:text-primary/90"
+            >
               <Logo />
-            </Link>
-            <Link to={"/"} className="text-primary hover:text-primary/90">
+            </button>
+            <button
+              onClick={() => navigate("/")}
+              className="text-primary hover:text-primary/90"
+            >
               <span className="text-lg font-bold text-primary hidden md:inline">
                 Digital Xpress
               </span>
-            </Link>
+            </button>
             {/* Navigation menu */}
             <NavigationMenu className="h-full *:h-full max-md:hidden">
               <NavigationMenuList className="h-full gap-2">
                 {navigationLinks.map((link, index) => (
                   <NavigationMenuItem key={index} className="h-full">
                     <NavigationMenuLink className="text-muted-foreground hover:text-primary border-b-primary hover:border-b-primary data-[active]:border-b-primary h-full justify-center rounded-none border-y-2 border-transparent py-1.5 font-medium hover:bg-transparent data-[active]:bg-transparent!">
-                      <Link to={link.href}>{link.label}</Link>
+                      <button
+                        onClick={() => navigate(link.href)}
+                        className="h-full w-full"
+                      >
+                        {link.label}
+                      </button>
                     </NavigationMenuLink>
                   </NavigationMenuItem>
                 ))}
@@ -115,35 +144,47 @@ export default function Navbar() {
         {/* Right side */}
         <div className="flex items-center gap-2">
           <ModeToggle></ModeToggle>
-          <Button asChild variant="ghost" size="sm" className="text-sm">
-            <Link to={"/register"}>Register</Link>
-          </Button>
-          {userInfo?.data.role ? (
+
+          {userInfo?.data?.role ? (
             <>
-              {/* dashboard based on role */}
-              <Button asChild variant="ghost" size="sm" className="text-sm">
-                <Link
-                  to={
+              <Button
+                onClick={() => {
+                  const dashboardPath =
                     userInfo?.data.role === "ADMIN"
                       ? "/admin/dashboard"
                       : userInfo?.data.role === "USER"
                       ? "/user/dashboard"
-                      : "/agent/dashboard"
-                  }
-                >
-                  Dashboard
-                </Link>
+                      : "/agent/dashboard";
+                  navigate(dashboardPath);
+                }}
+                variant="ghost"
+                size="sm"
+                className="text-sm"
+              >
+                Dashboard
               </Button>
-
-              {/* implement logout */}
-              <Button size="sm" className="text-sm" onClick={handleLogout}>
+              <Button onClick={handleLogout} size="sm" className="text-sm">
                 Logout
               </Button>
             </>
           ) : (
-            <Button asChild size="sm" className="text-sm">
-              <Link to={"/login"}>Login</Link>
-            </Button>
+            <>
+              <Button
+                onClick={() => navigate("/register")}
+                variant="ghost"
+                size="sm"
+                className="text-sm"
+              >
+                Register
+              </Button>
+              <Button
+                onClick={() => navigate("/login")}
+                size="sm"
+                className="text-sm"
+              >
+                Login
+              </Button>
+            </>
           )}
         </div>
       </div>

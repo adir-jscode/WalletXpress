@@ -14,7 +14,7 @@ const userApi = baseApi.injectEndpoints({
         url: "/user/me",
         method: "GET",
       }),
-      providesTags: ["USER"],
+      providesTags: ["USER", "WALLET", "TRANSACTION"],
     }),
     getAllAgents: build.query<{ data: IUser[] }, void>({
       query: () => ({

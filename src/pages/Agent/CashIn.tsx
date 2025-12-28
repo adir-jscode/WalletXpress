@@ -39,9 +39,8 @@ export default function CashIn() {
       }).unwrap();
       toast.success("Cash-in successful");
       navigate("/agent/dashboard");
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      toast.error("Cash-in failed");
+      toast.error(error?.data?.message || "Cash-in failed");
     }
   };
 

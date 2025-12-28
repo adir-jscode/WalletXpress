@@ -8,22 +8,28 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useGetWalletQuery } from "@/redux/features/wallet/wallet.api";
-import {
-  ArrowDownLeft,
-  ArrowUpRight,
-  Eye,
-  EyeOff,
-  Plus,
-  Send,
-} from "lucide-react";
+import { useGetTransactionHistoryQuery } from "@/redux/features/transaction/transaction.api";
+import { useGetUserInfoQuery } from "@/redux/features/user/user.api";
+import { ArrowUpRight, Eye, EyeOff, Plus, Send } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
 export default function UserDashboard() {
   const navigate = useNavigate();
-  const { data: walletData, isLoading } = useGetWalletQuery();
+  const { data: userInfo, isLoading } = useGetUserInfoQuery(undefined);
+  const { data: transactionInfo } = useGetTransactionHistoryQuery();
   const [showBalance, setShowBalance] = useState(true);
+
+  const totalSend = transactionInfo?.data
+    .filter((tx) => tx.type === "SEND" || tx.type === "CASH_OUT")
+    .reduce((acc, tx) => acc + tx.amount, 0);
+
+  const totalReceive = transactionInfo?.data
+    .filter(
+      (tx) =>
+        tx.type === "CASH_IN" || tx.toWalletId === userInfo?.data.wallet._id
+    )
+    .reduce((acc, tx) => acc + tx.amount, 0);
 
   if (isLoading) {
     return (
@@ -33,7 +39,7 @@ export default function UserDashboard() {
     );
   }
 
-  const balance = walletData?.data?.balance || 0;
+  const balance = userInfo?.data.wallet.balance || 0;
 
   return (
     <div className="space-y-6">
@@ -67,8 +73,7 @@ export default function UserDashboard() {
             <CardTitle className="text-sm">Total Sent</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-600">৳0</div>
-            <p className="text-xs text-muted-foreground mt-2">This month</p>
+            <div className="text-2xl font-bold text-blue-600">৳{totalSend}</div>
           </CardContent>
         </Card>
 
@@ -77,8 +82,9 @@ export default function UserDashboard() {
             <CardTitle className="text-sm">Total Received</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">৳0</div>
-            <p className="text-xs text-muted-foreground mt-2">This month</p>
+            <div className="text-2xl font-bold text-green-600">
+              ৳{totalReceive}
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -89,22 +95,15 @@ export default function UserDashboard() {
           <CardTitle>Quick Actions</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             <Button
-              onClick={() => navigate("/user/add-money")}
+              onClick={() => navigate("/user/cash-out")}
               className="flex flex-col items-center gap-2 h-auto py-4 bg-blue-500 hover:bg-blue-600"
             >
               <Plus size={24} />
-              <span>Add Money</span>
+              <span>Cash Out</span>
             </Button>
-            <Button
-              onClick={() => navigate("/user/withdraw")}
-              variant="outline"
-              className="flex flex-col items-center gap-2 h-auto py-4"
-            >
-              <ArrowDownLeft size={24} />
-              <span>Withdraw</span>
-            </Button>
+
             <Button
               onClick={() => navigate("/user/send-money")}
               variant="outline"

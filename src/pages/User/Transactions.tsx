@@ -11,8 +11,9 @@ import { ArrowDownRight, ArrowRight, ArrowUpLeft } from "lucide-react";
 
 export default function Transactions() {
   const { data: transactionsData, isLoading } = useGetTransactionHistoryQuery();
-
+  //const { data: userInfo } = useGetUserInfoQuery(undefined);
   const transactions = transactionsData?.data || [];
+  console.log(transactions);
 
   const getTransactionIcon = (type: string) => {
     switch (type) {
@@ -66,7 +67,13 @@ export default function Transactions() {
                   <div className="flex items-center gap-3">
                     {getTransactionIcon(tx.type)}
                     <div>
-                      <p className="font-medium capitalize">{tx.type}</p>
+                      <p className="font-medium capitalize">
+                        {tx.type}
+                        {/* {tx.type === "CASH_IN" ||
+                        tx.toWalletId === userInfo?.data.wallet.id
+                          ? " (Received)"
+                          : ""} */}
+                      </p>
                       <p className="text-sm text-muted-foreground">
                         {new Date(tx.createdAt).toLocaleDateString()}
                       </p>

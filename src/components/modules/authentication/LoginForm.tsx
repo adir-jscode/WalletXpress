@@ -105,12 +105,6 @@ export function LoginForm({
                       <FormLabel className="text-slate-700 dark:text-slate-300 font-medium">
                         Password
                       </FormLabel>
-                      <button
-                        type="button"
-                        className="text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
-                      >
-                        Forgot?
-                      </button>
                     </div>
                     <FormControl>
                       <Password
