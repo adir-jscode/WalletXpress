@@ -21,23 +21,22 @@ export default function AgentDashboard() {
       </div>
     );
   }
-  console.log("info", transactionInfo);
 
   const balance = userInfo?.data?.wallet.balance || 0;
   const totalCashIn = transactionInfo?.data
-    .filter(
-      (tx) =>
-        tx.type === "CASH_IN" || tx.fromWallet === userInfo?.data.wallet._id
-    )
-    .reduce((acc, tx) => acc + tx.amount, 0);
-  console.log("in", totalCashIn);
+    ? transactionInfo.data
+        .filter(
+          (tx) => tx.type === "CASH_IN" && tx.initiator === userInfo?.data._id
+        )
+        .reduce((acc, tx) => acc + tx.amount, 0)
+    : 0;
   const totalCashOut = transactionInfo?.data
-    .filter(
-      (tx) =>
-        tx.type === "CASH_OUT" || tx.toWallet === userInfo?.data.wallet._id
-    )
-    .reduce((acc, tx) => acc + tx.amount, 0);
-  console.log("out", totalCashOut);
+    ? transactionInfo.data
+        .filter(
+          (tx) => tx.type === "CASH_OUT" && tx.receiver === userInfo?.data._id
+        )
+        .reduce((acc, tx) => acc + tx.amount, 0)
+    : 0;
 
   return (
     <div className="space-y-6">
@@ -69,7 +68,7 @@ export default function AgentDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-green-600">
-              ৳{totalCashIn}
+              ৳{totalCashIn.toFixed(2)}
             </div>
           </CardContent>
         </Card>
@@ -81,7 +80,7 @@ export default function AgentDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-red-600">
-              ৳{totalCashOut}
+              ৳{totalCashOut.toFixed(2)}
             </div>
           </CardContent>
         </Card>

@@ -19,6 +19,7 @@ export interface IUser {
   role: "USER" | "AGENT" | "ADMIN";
   isVerified: boolean;
   isBlocked: boolean;
+  wallet: IWallet;
   createdAt: string;
   updatedAt: string;
 }
@@ -35,13 +36,14 @@ export interface IWallet {
 export interface ITransaction {
   _id: string;
   userId: string;
-  type: "add" | "withdraw" | "send" | "cash-in" | "cash-out";
+  type: "CASH_IN" | "CASH_OUT" | "SEND";
   amount: number;
   fee: number;
   commission: number;
   initiator: string;
   receiver?: string;
-  status: "pending" | "completed" | "reversed";
+  status: "PENDING" | "COMPLETED" | "REVERSED";
+  toWalletId?: string;
   createdAt: string;
   updatedAt: string;
 }

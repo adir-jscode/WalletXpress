@@ -8,8 +8,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useSendMoneyMutation } from "@/redux/features/wallet/wallet.api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
+import { toast } from "sonner";
 import z from "zod";
 
 const formSchema = z.object({
@@ -18,20 +21,34 @@ const formSchema = z.object({
 });
 
 export default function SendMoneyForm() {
+  const [sendMoney, { isLoading }] = useSendMoneyMutation();
+  const navigate = useNavigate();
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       phone: "",
-      amount: 0,
+      amount: undefined,
     },
   });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = async (data: any) => {
+    try {
+      await sendMoney({
+        phone: data.phone,
+        balance: data.amount,
+      }).unwrap();
+      toast.success("Money sent successfully");
+      navigate("/user");
+    } catch (error) {
+      console.log(error);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      toast.error((error as any)?.data?.message || "Failed to send money");
+    }
   };
   return (
     <div className="">
       <div>
+        {isLoading && <p className="text-center">Sending money...</p>}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
@@ -73,7 +90,12 @@ export default function SendMoneyForm() {
                 <FormItem>
                   <FormLabel>Amount</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="0" {...field} />
+                    <Input
+                      type="number"
+                      placeholder="0"
+                      {...field}
+                      value={field.value as number}
+                    />
                   </FormControl>
 
                   <FormMessage />

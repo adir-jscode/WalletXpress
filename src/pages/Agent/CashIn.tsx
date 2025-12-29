@@ -40,7 +40,8 @@ export default function CashIn() {
       toast.success("Cash-in successful");
       navigate("/agent/dashboard");
     } catch (error) {
-      toast.error(error?.data?.message || "Cash-in failed");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      toast.error((error as any)?.data?.message || "Cash-in failed");
     }
   };
 

@@ -1,69 +1,52 @@
-# React + TypeScript + Vite
+# Digital Xpress - Digital Wallet Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Live Deployment Link
 
-Currently, two official plugins are available:
+https://digital-xpress-sigma.vercel.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Project Overview
 
-## Expanding the ESLint configuration
+Digital Xpress is a comprehensive digital wallet application built for secure, fast, and convenient financial transactions. The platform supports three user roles: Users (for personal transactions), Agents (for cash-in/out services), and Admins (for system management). It features user authentication, transaction management, wallet operations, and a responsive UI designed for both web and mobile experiences.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Key features include:
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- User registration and login with role-based access
+- Dashboard views for Users, Agents, and Admins with relevant metrics
+- Transaction history and management
+- Cash-in and cash-out services for Agents
+- Admin controls for user and agent management, transaction monitoring, and wallet oversight
+- Responsive design with dark/light mode support
+- Integration with a backend API for data management
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+## Technology Stack
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- **Frontend Framework**: React 18 with TypeScript
+- **Build Tool**: Vite
+- **State Management**: Redux Toolkit with RTK Query for API calls
+- **Routing**: React Router
+- **UI Library**: Shadcn/ui (built on Radix UI and Tailwind CSS)
+- **Styling**: Tailwind CSS
+- **Icons**: Lucide React
+- **Charts**: Recharts
+- **Forms**: React Hook Form with Zod validation
+- **Notifications**: Sonner for toasts
+- **Theme**: Next Themes for dark/light mode
+- **HTTP Client**: Axios (via RTK Query)
+- **Development Tools**: ESLint, TypeScript, Vite plugins
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Setup Instructions
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Prerequisites
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Node.js (version 18 or higher)
+- npm or yarn
+- A backend API server (configured via environment variables)
+
+### Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/adir-jscode/WalletXpress.git
+cd digital-xpress
 ```

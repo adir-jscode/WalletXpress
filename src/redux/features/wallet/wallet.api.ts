@@ -31,10 +31,7 @@ const walletApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["WALLET", "TRANSACTION", "USER"],
     }),
-    sendMoney: build.mutation<
-      { data: ITransaction },
-      IWalletAction & { receiver: string }
-    >({
+    sendMoney: build.mutation<{ data: ITransaction }, IWalletAction>({
       query: (data) => ({
         url: "/wallet/send-money",
         method: "PATCH",
