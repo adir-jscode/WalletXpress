@@ -1,13 +1,15 @@
 import WalletLogin from "@/assets/images/wallet-login.jpeg";
 import Logo from "@/components/logo";
 import { LoginForm } from "@/components/modules/authentication/LoginForm";
-import { Lock, Shield, Zap } from "lucide-react";
 
 export default function Login() {
   return (
     <div className="grid min-h-svh lg:grid-cols-2 bg-white dark:bg-slate-950">
       <div className="flex flex-col gap-6 p-6 md:p-10 lg:p-12">
-        <div className="flex justify-center gap-2 md:justify-start">
+        <div
+          className="flex justify-center gap-2 md:justify-start"
+          onClick={() => (window.location.href = "/")}
+        >
           <Logo />
         </div>
 
@@ -59,39 +61,13 @@ export default function Login() {
                 <button
                   onClick={() => {
                     navigator.clipboard.writeText(
-                      "Phone: +1234567890\nPassword: Admin@123"
+                      "Phone: +1234567890\nPassword: Admin@123",
                     );
                   }}
                   className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-semibold"
                 >
                   Copy Credentials
                 </button>
-              </div>
-            </div>
-            {/* Security Features */}
-            <div className="space-y-3 pt-4">
-              <p className="text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wide">
-                Why you're safe with us
-              </p>
-              <div className="grid gap-3">
-                <div className="flex items-start gap-3">
-                  <Shield className="h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-slate-600 dark:text-slate-400">
-                    Bank-grade encryption
-                  </span>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Lock className="h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-slate-600 dark:text-slate-400">
-                    2FA & biometric security
-                  </span>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Zap className="h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-slate-600 dark:text-slate-400">
-                    Instant transaction alerts
-                  </span>
-                </div>
               </div>
             </div>
           </div>

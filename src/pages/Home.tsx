@@ -1,13 +1,21 @@
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   ArrowRight,
+  CheckCircle2,
   Lock,
+  Mail,
   Shield,
+  ShieldCheck,
   Smartphone,
+  Star,
   TrendingUp,
+  UserPlus,
   Users,
+  Wallet,
   Zap,
 } from "lucide-react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 
 export default function Home() {
@@ -59,10 +67,94 @@ export default function Home() {
     { label: "Uptime Guarantee", value: "99.9%" },
   ];
 
+  const steps = [
+    {
+      icon: <UserPlus className="w-6 h-6" />,
+      title: "Create Your Account",
+      description:
+        "Sign up in minutes with just your email and basic details. No paperwork, no waiting.",
+    },
+    {
+      icon: <Wallet className="w-6 h-6" />,
+      title: "Fund Your Wallet",
+      description:
+        "Add money through an agent cash-in point or link your bank account securely.",
+    },
+    {
+      icon: <Zap className="w-6 h-6" />,
+      title: "Send & Receive Instantly",
+      description:
+        "Transfer funds to friends, family, or businesses in seconds, anytime, anywhere.",
+    },
+  ];
+
+  const testimonials = [
+    {
+      name: "Ayesha Rahman",
+      role: "Small Business Owner",
+      quote:
+        "Switching to this wallet cut my payment processing time in half. My customers love how fast transfers settle.",
+      rating: 5,
+    },
+    {
+      name: "Tanvir Hasan",
+      role: "Freelance Designer",
+      quote:
+        "The agent network makes cashing out incredibly convenient, even in areas without nearby bank branches.",
+      rating: 5,
+    },
+    {
+      name: "Maria Gomez",
+      role: "Frequent Traveler",
+      quote:
+        "I feel safe knowing my account is protected with strong encryption and two-factor authentication.",
+      rating: 4,
+    },
+  ];
+
+  const trustPoints = [
+    {
+      icon: <ShieldCheck className="w-5 h-5" />,
+      title: "256-bit Encryption",
+      description: "All data is encrypted in transit and at rest.",
+    },
+    {
+      icon: <Lock className="w-5 h-5" />,
+      title: "Secure Authentication",
+      description: "JWT-based sessions with role-based access control.",
+    },
+    {
+      icon: <CheckCircle2 className="w-5 h-5" />,
+      title: "Verified Agents",
+      description: "Every cash-in/cash-out agent is verified and monitored.",
+    },
+  ];
+
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterStatus, setNewsletterStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
+
+  const handleNewsletterSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!newsletterEmail || !/^\S+@\S+\.\S+$/.test(newsletterEmail)) {
+      setNewsletterStatus("error");
+      return;
+    }
+
+    setNewsletterStatus("loading");
+
+    setTimeout(() => {
+      setNewsletterStatus("success");
+      setNewsletterEmail("");
+    }, 1000);
+  };
+
   return (
     <div className="w-full">
       {/* Hero Section */}
-      <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-secondary/5 px-4 sm:px-6 lg:px-8">
+      <section className="min-h-[65vh] flex items-center justify-center bg-gradient-to-br from-background via-background to-secondary/5 px-4 sm:px-6 lg:px-8 py-12">
         <div className="max-w-6xl mx-auto w-full">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             {/* Left Content */}
@@ -212,6 +304,190 @@ export default function Home() {
               View All Features
             </Button>
           </div>
+        </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section className="py-20 sm:py-28 px-4 sm:px-6 lg:px-8 bg-card border-y border-border">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-4">
+              How It Works
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Get started with WalletXpress in three simple steps
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {steps.map((step, idx) => (
+              <div
+                key={idx}
+                className="bg-background border border-border rounded-xl p-8 text-center hover:border-primary transition-colors duration-300"
+              >
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 text-primary mx-auto">
+                  {step.icon}
+                </div>
+                <h3 className="text-xl font-semibold text-foreground mb-2">
+                  Step {idx + 1}: {step.title}
+                </h3>
+                <p className="text-muted-foreground">{step.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-20 sm:py-28 px-4 sm:px-6 lg:px-8 bg-background">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-4">
+              What Our Users Say
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Real feedback from people using WalletXpress every day
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, idx) => (
+              <div
+                key={idx}
+                className="bg-card border border-border rounded-xl p-8 flex flex-col hover:border-primary transition-colors duration-300"
+              >
+                <div className="flex items-center gap-1 mb-4">
+                  {Array.from({ length: 5 }).map((_, starIdx) => (
+                    <Star
+                      key={starIdx}
+                      className={`w-4 h-4 ${
+                        starIdx < testimonial.rating
+                          ? "fill-primary text-primary"
+                          : "text-muted-foreground"
+                      }`}
+                    />
+                  ))}
+                </div>
+                <p className="text-muted-foreground mb-6 flex-1">
+                  "{testimonial.quote}"
+                </p>
+                <div>
+                  <p className="font-semibold text-foreground">
+                    {testimonial.name}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {testimonial.role}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Security / Trust Section */}
+      <section className="py-20 sm:py-28 px-4 sm:px-6 lg:px-8 bg-card border-y border-border">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-4">
+                Your Money, Always Protected
+              </h2>
+              <p className="text-lg text-muted-foreground mb-8">
+                We take security seriously. Every transaction is encrypted,
+                every account is protected, and every agent is verified to keep
+                your funds safe.
+              </p>
+              <div className="space-y-4">
+                {trustPoints.map((point, idx) => (
+                  <div key={idx} className="flex items-start gap-4">
+                    <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center text-primary shrink-0">
+                      {point.icon}
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-foreground">
+                        {point.title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        {point.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="hidden lg:flex items-center justify-center">
+              <div className="relative w-full h-80">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/5 rounded-3xl blur-3xl"></div>
+                <div className="relative bg-background border border-border rounded-2xl p-8 shadow-2xl h-full flex flex-col items-center justify-center text-center gap-4">
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+                    <Shield className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-foreground">
+                    Bank-Grade Protection
+                  </h3>
+                  <p className="text-muted-foreground">
+                    256-bit encryption, JWT authentication, and continuous
+                    monitoring keep your account secure around the clock.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter Section */}
+      <section className="py-20 sm:py-28 px-4 sm:px-6 lg:px-8 bg-background">
+        <div className="max-w-2xl mx-auto text-center">
+          <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-primary mx-auto mb-4">
+            <Mail className="w-6 h-6" />
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
+            Stay in the Loop
+          </h2>
+          <p className="text-muted-foreground mb-8">
+            Subscribe to get product updates, security tips, and exclusive
+            offers delivered to your inbox.
+          </p>
+
+          <form
+            onSubmit={handleNewsletterSubmit}
+            className="flex flex-col sm:flex-row gap-3"
+          >
+            <div className="flex-1 text-left">
+              <label htmlFor="newsletter-email" className="sr-only">
+                Email address
+              </label>
+              <Input
+                id="newsletter-email"
+                type="email"
+                placeholder="Enter your email"
+                value={newsletterEmail}
+                onChange={(e) => {
+                  setNewsletterEmail(e.target.value);
+                  setNewsletterStatus("idle");
+                }}
+                aria-invalid={newsletterStatus === "error"}
+                disabled={newsletterStatus === "loading"}
+              />
+            </div>
+            <Button type="submit" disabled={newsletterStatus === "loading"}>
+              {newsletterStatus === "loading" ? "Subscribing..." : "Subscribe"}
+            </Button>
+          </form>
+
+          {newsletterStatus === "error" && (
+            <p className="text-sm text-destructive mt-3">
+              Please enter a valid email address.
+            </p>
+          )}
+          {newsletterStatus === "success" && (
+            <p className="text-sm text-primary mt-3">
+              Thanks for subscribing! Check your inbox for confirmation.
+            </p>
+          )}
         </div>
       </section>
 

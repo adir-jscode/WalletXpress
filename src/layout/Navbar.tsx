@@ -3,6 +3,13 @@
 import Logo from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
@@ -14,11 +21,9 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { authApi, useLogoutMutation } from "@/redux/features/auth/auth.api";
-import { logout as logoutAction } from "@/redux/features/auth/auth.slice";
 import { useGetUserInfoQuery } from "@/redux/features/user/user.api";
 import { useAppDispatch } from "@/redux/hook";
 import { useNavigate } from "react-router";
-import { toast } from "sonner";
 import { ModeToggle } from "./ModeToggler";
 
 // Navigation links array to be used in both desktop and mobile menus
@@ -38,17 +43,12 @@ export default function Navbar() {
   const dispatch = useAppDispatch();
 
   const handleLogout = async () => {
-    try {
-      await logout(undefined).unwrap();
-      dispatch(logoutAction());
-      dispatch(authApi.util.resetApiState());
-      navigate("/login");
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-      toast.error("Failed to logout. Please try again.");
-    }
-  };
+    await logout(undefined).unwrap();
 
+    dispatch(authApi.util.resetApiState());
+
+    window.location.href = "/login";
+  };
   return (
     <header className="border-b px-4 md:px-6">
       <div className="flex h-16 justify-between gap-4">
@@ -147,25 +147,51 @@ export default function Navbar() {
 
           {userInfo?.data?.role ? (
             <>
-              <Button
-                onClick={() => {
-                  const dashboardPath =
-                    userInfo?.data.role === "ADMIN"
-                      ? "/admin/dashboard"
-                      : userInfo?.data.role === "USER"
-                      ? "/user/dashboard"
-                      : "/agent/dashboard";
-                  navigate(dashboardPath);
-                }}
-                variant="ghost"
-                size="sm"
-                className="text-sm"
-              >
-                Dashboard
-              </Button>
-              <Button onClick={handleLogout} size="sm" className="text-sm">
-                Logout
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="text-sm">
+                    Account
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem
+                    onSelect={() => {
+                      const dashboardPath =
+                        userInfo?.data.role === "ADMIN"
+                          ? "/admin/dashboard"
+                          : userInfo?.data.role === "USER"
+                            ? "/user/dashboard"
+                            : "/agent/dashboard";
+                      navigate(dashboardPath);
+                    }}
+                  >
+                    Dashboard
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onSelect={() => {
+                      const profilePath =
+                        userInfo?.data.role === "ADMIN"
+                          ? "/profile"
+                          : userInfo?.data.role === "USER"
+                            ? "/profile"
+                            : "/profile";
+                      navigate(profilePath);
+                    }}
+                  >
+                    Profile
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onSelect={() => navigate("/contact")}>
+                    Support
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    variant="destructive"
+                    onSelect={handleLogout}
+                  >
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </>
           ) : (
             <>

@@ -45,8 +45,16 @@ export function LoginForm({
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
     try {
       const res = await login(data).unwrap();
-      if (res.success === true) {
-        navigate("/");
+      console.log("LOGIN SUCCESS", res);
+      if (res.data.role === "ADMIN") {
+        console.log("Admin login successful");
+        navigate("/admin/dashboard");
+        toast.success("Login successful");
+      } else if (res.data.role === "USER") {
+        navigate("/user/dashboard");
+        toast.success("Login successful");
+      } else {
+        navigate("/agent/dashboard");
         toast.success("Login successful");
       }
 
@@ -75,19 +83,19 @@ export function LoginForm({
                     <FormControl>
                       <Input
                         {...field}
-                        value={
-                          field.value.startsWith("+880")
-                            ? field.value
-                            : `+880${field.value}`
-                        }
-                        onChange={(e) => {
-                          const value = e.target.value.replace(/\D/g, "");
-                          if (value.startsWith("880")) {
-                            field.onChange("+" + value);
-                          } else {
-                            field.onChange("+880" + value);
-                          }
-                        }}
+                        // value={
+                        //   field.value.startsWith("+880")
+                        //     ? field.value
+                        //     : `+880${field.value}`
+                        // }
+                        // onChange={(e) => {
+                        //   const value = e.target.value.replace(/\D/g, "");
+                        //   if (value.startsWith("880")) {
+                        //     field.onChange("+" + value);
+                        //   } else {
+                        //     field.onChange("+880" + value);
+                        //   }
+                        // }}
                         placeholder="+8801XXXXXXXXX"
                         className="h-10 rounded-lg border-slate-200 dark:border-slate-700"
                       />

@@ -9,26 +9,26 @@ export default function Footer() {
     Product: [
       { label: "Features", href: "/features" },
       { label: "Pricing", href: "/pricing" },
-      { label: "Security", href: "#" },
-      { label: "Updates", href: "#" },
+      { label: "Security", href: "/security" },
+      { label: "Updates", href: "/blog" },
     ],
     Company: [
       { label: "About", href: "/about" },
-      { label: "Careers", href: "#" },
-      { label: "Blog", href: "#" },
+      { label: "Careers", href: "/careers" },
+      { label: "Blog", href: "/blog" },
       { label: "Contact", href: "/contact" },
     ],
     Legal: [
-      { label: "Privacy Policy", href: "#" },
-      { label: "Terms of Service", href: "#" },
-      { label: "Cookie Policy", href: "#" },
-      { label: "Compliance", href: "#" },
+      { label: "Privacy Policy", href: "/privacy" },
+      { label: "Terms of Service", href: "/terms" },
+      { label: "Cookie Policy", href: "/cookies" },
+      { label: "Compliance", href: "/security" },
     ],
     Support: [
-      { label: "Help Center", href: "#" },
+      { label: "Help Center", href: "/faq" },
       { label: "FAQs", href: "/faq" },
-      { label: "Status Page", href: "#" },
-      { label: "Feedback", href: "#" },
+      { label: "Status Page", href: "/status" },
+      { label: "Feedback", href: "/contact" },
     ],
   };
 
@@ -159,22 +159,22 @@ export default function Footer() {
           <p>© 2025 Digital Xpress. All rights reserved.</p>
           <div className="flex items-center gap-6">
             <button
-              onClick={() => navigate("#")}
+              onClick={() => navigate("/privacy")}
               className="hover:text-primary transition-colors"
             >
               Privacy
             </button>
             <button
-              onClick={() => navigate("#")}
+              onClick={() => navigate("/terms")}
               className="hover:text-primary transition-colors"
             >
               Terms
             </button>
             <button
-              onClick={() => navigate("#")}
+              onClick={() => navigate("/status")}
               className="hover:text-primary transition-colors"
             >
-              Sitemap
+              Status
             </button>
           </div>
         </div>
