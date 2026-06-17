@@ -103,7 +103,7 @@ export function RegisterForm({
     };
     try {
       const response = await register(userInfo).unwrap();
-      console.log("Registration response:", response);
+
       if (response.statusCode === 201) {
         navigate("/login");
         toast.success("Registration successful!");

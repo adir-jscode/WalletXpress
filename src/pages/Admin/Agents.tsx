@@ -21,16 +21,11 @@ export default function Agents() {
   const [approveSuspend] = useApproveSuspendAgentMutation();
 
   const agents = agentsData?.data || [];
-  console.log("Agents data:", agents);
 
   const handleApproveSuspend = async (
     agentId: string,
     approvalStatus: string,
   ) => {
-    console.log(
-      `handleApproveSuspend called with agentId: ${agentId}, approvalStatus: ${approvalStatus}`,
-    );
-
     try {
       await approveSuspend({
         id: agentId,

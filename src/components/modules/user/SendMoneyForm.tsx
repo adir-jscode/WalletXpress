@@ -40,7 +40,6 @@ export default function SendMoneyForm() {
       toast.success("Money sent successfully");
       navigate("/user");
     } catch (error) {
-      console.log(error);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       toast.error((error as any)?.data?.message || "Failed to send money");
     }

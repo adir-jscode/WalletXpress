@@ -40,7 +40,6 @@ export default function CashOutForm() {
       toast.success("Money cashed out successfully");
       navigate("/user");
     } catch (error) {
-      console.log(error);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       toast.error((error as any)?.data?.message || "Failed to cash out money");
     }

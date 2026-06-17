@@ -73,7 +73,6 @@ export default function Profile() {
 
   const onSubmit = async (values: ProfileFormValues) => {
     try {
-      console.log("Submitting profile update with values:", values);
       await updateUser(values).unwrap();
 
       toast.success("Profile updated successfully");

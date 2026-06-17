@@ -39,8 +39,6 @@ export default function CashInForm() {
       toast.success("Money cashed in successfully");
       navigate("/user");
     } catch (error) {
-      console.log(error);
-
       toast.error((error as any)?.data?.message || "Failed to cash in money");
     }
   };

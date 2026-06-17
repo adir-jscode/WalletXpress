@@ -15,7 +15,6 @@ export default function Transactions() {
   const { data: transactionsData, isLoading } = useGetAllTransactionsQuery();
 
   const transactions = transactionsData?.data || [];
-  console.log("Transactions data:", transactions);
 
   const getTransactionIcon = (type: string) => {
     switch (type) {

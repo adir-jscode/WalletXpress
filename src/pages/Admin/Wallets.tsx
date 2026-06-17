@@ -14,7 +14,6 @@ export default function Wallets() {
   const { data: walletsData, isLoading } = useGetAllWalletsQuery();
 
   const wallets = walletsData?.data || [];
-  console.log("Wallets data:", wallets);
 
   const totalBalance = wallets.reduce((sum, w) => sum + w.balance, 0);
   const blockedCount = wallets.filter((w) => w.status === "BLOCKED").length;
