@@ -1,5 +1,6 @@
 "use client";
-
+import LoadingSpinner from "@/components/LoadingSpinner";
+import UserDetailsDialog from "@/components/modules/user/UserDetailsDialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
 import { useApproveSuspendAgentMutation } from "@/redux/features/admin/admin.api";
 import { useGetAllAgentsQuery } from "@/redux/features/user/user.api";
 import { CheckCircle, Mail, Phone, XCircle } from "lucide-react";
@@ -19,11 +21,23 @@ export default function Agents() {
   const [approveSuspend] = useApproveSuspendAgentMutation();
 
   const agents = agentsData?.data || [];
+  console.log("Agents data:", agents);
 
-  const handleApproveSuspend = async (agentId: string, isBlocked: boolean) => {
+  const handleApproveSuspend = async (
+    agentId: string,
+    approvalStatus: string,
+  ) => {
+    console.log(
+      `handleApproveSuspend called with agentId: ${agentId}, approvalStatus: ${approvalStatus}`,
+    );
+
     try {
-      await approveSuspend({ id: agentId }).unwrap();
-      toast.success(isBlocked ? "Agent activated" : "Agent suspended");
+      await approveSuspend({
+        id: agentId,
+      }).unwrap();
+      toast.success(
+        approvalStatus === "APPROVED" ? "Agent suspended" : "Agent activated",
+      );
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("Action failed");
@@ -39,7 +53,7 @@ export default function Agents() {
         </CardHeader>
         <CardContent>
           {isLoading ? (
-            <div>Loading...</div>
+            <LoadingSpinner text="Loading agents..." fullscreen />
           ) : agents.length === 0 ? (
             <div className="text-center text-muted-foreground">
               No agents found
@@ -67,23 +81,33 @@ export default function Agents() {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Badge
-                        variant={agent.isBlocked ? "destructive" : "default"}
-                      >
-                        {agent.isBlocked ? "Suspended" : "Active"}
-                      </Badge>
+                      <UserDetailsDialog user={agent} />
+
                       <Badge variant="outline">{agent.role}</Badge>
+
+                      <Badge
+                        variant={
+                          agent.approvalStatus === "APPROVED"
+                            ? "default"
+                            : agent.approvalStatus === "SUSPENDED"
+                              ? "destructive"
+                              : "secondary"
+                        }
+                      >
+                        {agent.approvalStatus}
+                      </Badge>
+
                       <Button
                         size="sm"
                         variant="outline"
                         onClick={() =>
-                          handleApproveSuspend(agent._id, agent.isBlocked)
+                          handleApproveSuspend(agent._id, agent.approvalStatus!)
                         }
                       >
-                        {agent.isBlocked ? (
-                          <CheckCircle size={16} className="text-green-600" />
-                        ) : (
+                        {agent.approvalStatus === "APPROVED" ? (
                           <XCircle size={16} className="text-red-600" />
+                        ) : (
+                          <CheckCircle size={16} className="text-green-600" />
                         )}
                       </Button>
                     </div>

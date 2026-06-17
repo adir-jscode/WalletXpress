@@ -1,3 +1,6 @@
+import LoadingSpinner from "@/components/LoadingSpinner";
+import UserDetailsDialog from "@/components/modules/user/UserDetailsDialog";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -7,26 +10,31 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useBlockUnblockWalletMutation } from "@/redux/features/admin/admin.api";
+import { useBlockUnblockMutation } from "@/redux/features/admin/admin.api";
 import { useGetAllUsersQuery } from "@/redux/features/user/user.api";
+import type { IUser } from "@/types";
 import { Lock, Mail, Phone, Unlock } from "lucide-react";
 import { toast } from "sonner";
 
 export default function Users() {
   const { data: usersData, isLoading } = useGetAllUsersQuery();
-  const [blockUnblock] = useBlockUnblockWalletMutation();
+  const [blockUnblock] = useBlockUnblockMutation();
 
   const users = usersData?.data || [];
 
-  const handleBlockUnblock = async (userId: string, currentStatus: boolean) => {
+  const handleBlockUnblock = async (userId: string) => {
     try {
       await blockUnblock({ id: userId }).unwrap();
-      toast.success(currentStatus ? "User unblocked" : "User blocked");
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
+
+      toast.success("Action successful");
+    } catch {
       toast.error("Action failed");
     }
   };
+
+  if (isLoading) {
+    return <LoadingSpinner text="Loading users..." fullscreen />;
+  }
 
   return (
     <div className="space-y-4">
@@ -37,53 +45,59 @@ export default function Users() {
             Manage system users and their wallets
           </CardDescription>
         </CardHeader>
+
         <CardContent>
-          {isLoading ? (
-            <div>Loading...</div>
-          ) : users.length === 0 ? (
-            <div className="text-center text-muted-foreground">
+          {users.length === 0 ? (
+            <div className="text-center text-muted-foreground py-8">
               No users found
             </div>
           ) : (
             <div className="space-y-3">
               {users
-                .filter((user) => user.role === "USER")
-                .map((user) => (
+                .filter((user: IUser) => user.role === "USER")
+                .map((user: IUser) => (
                   <div
                     key={user._id}
-                    className="flex items-center justify-between p-4 border rounded-lg"
+                    className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/30 transition-colors"
                   >
                     <div className="flex-1">
-                      <p className="font-medium">{user.name}</p>
+                      <p className="font-semibold">{user.name}</p>
+
                       <div className="flex flex-col gap-2 mt-2 text-sm text-muted-foreground">
                         <div className="flex items-center gap-2">
                           <Mail size={14} />
                           {user.email}
                         </div>
+
                         <div className="flex items-center gap-2">
                           <Phone size={14} />
                           {user.phone}
                         </div>
                       </div>
                     </div>
+
                     <div className="flex items-center gap-2">
+                      <UserDetailsDialog user={user} />
+
                       <Badge
-                        variant={user.isBlocked ? "destructive" : "default"}
+                        variant={
+                          user.isActive === "BLOCKED"
+                            ? "destructive"
+                            : "default"
+                        }
                       >
-                        {user.isBlocked ? "Blocked" : "Active"}
+                        {user.isActive === "BLOCKED" ? "BLOCKED" : "Active"}
                       </Badge>
-                      <Badge variant="outline">{user.role}</Badge>
+
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={() =>
-                          handleBlockUnblock(user._id, user.isBlocked)
-                        }
+                        onClick={() => handleBlockUnblock(user._id)}
                       >
-                        {user.isBlocked ? (
-                          <Unlock size={16} />
+                        {user.isActive === "BLOCKED" ? (
+                          <Unlock className="h-4 w-4" />
                         ) : (
-                          <Lock size={16} />
+                          <Lock className="h-4 w-4" />
                         )}
                       </Button>
                     </div>

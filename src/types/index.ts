@@ -17,8 +17,10 @@ export interface IUser {
   phone: string;
   nid: string;
   role: "USER" | "AGENT" | "ADMIN";
+  address: string;
   isVerified: boolean;
-  isBlocked: boolean;
+  isActive?: "ACTIVE" | "INACTIVE" | "BLOCKED";
+  approvalStatus?: "APPROVED" | "SUSPENDED" | "PENDING";
   wallet: IWallet;
   createdAt: string;
   updatedAt: string;
@@ -26,9 +28,9 @@ export interface IUser {
 
 export interface IWallet {
   _id: string;
-  userId: string;
+  owner: string;
   balance: number;
-  isBlocked: boolean;
+  status: "ACTIVE" | "INACTIVE" | "BLOCKED";
   createdAt: string;
   updatedAt: string;
 }
@@ -39,8 +41,10 @@ export interface ITransaction {
   type: "CASH_IN" | "CASH_OUT" | "SEND";
   amount: number;
   fee: number;
+  fromWallet: string;
+  toWallet?: string;
   commission: number;
-  initiator: string;
+  initiator: IUser;
   receiver?: string;
   status: "PENDING" | "COMPLETED" | "REVERSED";
   toWalletId?: string;

@@ -1,3 +1,5 @@
+import LoadingSpinner from "@/components/LoadingSpinner";
+import TransactionDetailsDialog from "@/components/TransactionDetailsDialog";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -52,7 +54,7 @@ export default function Transactions() {
         </CardHeader>
         <CardContent>
           {isLoading ? (
-            <div>Loading...</div>
+            <LoadingSpinner text="Loading transactions..." fullscreen />
           ) : transactions.length === 0 ? (
             <div className="text-center text-muted-foreground">
               No transactions yet
@@ -79,11 +81,16 @@ export default function Transactions() {
                       </p>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="font-medium">৳{tx.amount.toFixed(2)}</p>
-                    <Badge className={getStatusColor(tx.status)}>
-                      {tx.status}
-                    </Badge>
+                  <div className="flex items-center gap-3">
+                    <TransactionDetailsDialog transaction={tx} />
+
+                    <div className="text-right">
+                      <p className="font-medium">৳{tx.amount.toFixed(2)}</p>
+
+                      <Badge className={getStatusColor(tx.status)}>
+                        {tx.status}
+                      </Badge>
+                    </div>
                   </div>
                 </div>
               ))}

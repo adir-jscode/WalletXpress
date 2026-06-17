@@ -3,6 +3,14 @@
 import AIChatWidget from "@/components/Aichatwidget";
 import { AppSidebar } from "@/components/app-sidebar";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
@@ -13,9 +21,9 @@ import { useNotifications } from "@/hooks/useNotifications"; // ← add
 import { authApi, useLogoutMutation } from "@/redux/features/auth/auth.api";
 import { useGetUserInfoQuery } from "@/redux/features/user/user.api";
 import { useAppDispatch } from "@/redux/hook";
-import { Bell } from "lucide-react"; // ← add
+import { Bell, ChevronDown, LayoutDashboard, LogOut, User } from "lucide-react";
 import { useState } from "react"; // ← add
-import { Outlet } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 import { toast } from "sonner"; // ← add (already in your project)
 
 export default function DashboardLayout() {
@@ -39,6 +47,8 @@ export default function DashboardLayout() {
     window.location.href = "/login";
   };
 
+  const navigate = useNavigate();
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -53,7 +63,7 @@ export default function DashboardLayout() {
                 <span className="text-orange-500">({userInfo.data.role})</span>
               </span>
               <span className="text-sm text-muted-foreground">
-                {userInfo.data.phone}
+                {userInfo.data.email}
               </span>
             </div>
           )}
@@ -68,14 +78,82 @@ export default function DashboardLayout() {
             )}
           </div>
 
-          <Button variant="destructive" onClick={handleLogout}>
-            Logout
-          </Button>
-
           <Separator
             orientation="vertical"
-            className="mr-2 data-[orientation=vertical]:h-4"
+            className="mx-2 data-[orientation=vertical]:h-4"
           />
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                className="h-11 px-2 flex items-center gap-3 hover:bg-muted"
+              >
+                <div className="h-9 w-9 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white flex items-center justify-center font-semibold shadow-sm">
+                  {userInfo?.data?.name?.charAt(0)?.toUpperCase() || "U"}
+                </div>
+
+                <div className="hidden md:flex flex-col items-start">
+                  <span className="text-sm font-medium leading-none">
+                    {userInfo?.data?.name}
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    {userInfo?.data?.role}
+                  </span>
+                </div>
+
+                <ChevronDown className="h-4 w-4 text-muted-foreground" />
+              </Button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent align="end" className="w-64">
+              <DropdownMenuLabel>
+                <div className="flex flex-col">
+                  <span>{userInfo?.data?.name}</span>
+                  <span className="text-xs font-normal text-muted-foreground">
+                    {userInfo?.data?.phone}
+                  </span>
+                </div>
+              </DropdownMenuLabel>
+
+              <DropdownMenuSeparator />
+
+              <DropdownMenuItem
+                onClick={() => navigate("/profile")}
+                className="cursor-pointer"
+              >
+                <User className="mr-2 h-4 w-4" />
+                Profile
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                onClick={() => {
+                  const dashboardPath =
+                    userInfo?.data.role === "ADMIN"
+                      ? "/admin/dashboard"
+                      : userInfo?.data.role === "USER"
+                        ? "/user/dashboard"
+                        : "/agent/dashboard";
+
+                  navigate(dashboardPath);
+                }}
+                className="cursor-pointer"
+              >
+                <LayoutDashboard className="mr-2 h-4 w-4" />
+                Dashboard
+              </DropdownMenuItem>
+
+              <DropdownMenuSeparator />
+
+              <DropdownMenuItem
+                onClick={handleLogout}
+                className="cursor-pointer text-red-600 focus:text-red-600"
+              >
+                <LogOut className="mr-2 h-4 w-4" />
+                Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4">
           <Outlet />

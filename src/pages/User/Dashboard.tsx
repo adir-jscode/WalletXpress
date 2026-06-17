@@ -1,5 +1,6 @@
 "use client";
 
+import LoadingSpinner from "@/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -27,16 +28,12 @@ export default function UserDashboard() {
   const totalReceive = transactionInfo?.data
     .filter(
       (tx) =>
-        tx.type === "CASH_IN" || tx.toWalletId === userInfo?.data.wallet._id
+        tx.type === "CASH_IN" || tx.toWalletId === userInfo?.data.wallet._id,
     )
     .reduce((acc, tx) => acc + tx.amount, 0);
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        Loading...
-      </div>
-    );
+    return <LoadingSpinner text="Loading dashboard..." fullscreen />;
   }
 
   const balance = userInfo?.data.wallet.balance || 0;

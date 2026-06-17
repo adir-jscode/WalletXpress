@@ -3,9 +3,9 @@ import type { IUser } from "@/types";
 
 const adminApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    blockUnblockWallet: build.mutation<{ data: IUser }, { id: string }>({
+    blockUnblock: build.mutation<{ data: IUser }, { id: string }>({
       query: ({ id }) => ({
-        url: `/admin/block-unblock/${id}`,
+        url: `/admin/block-user/${id}`,
         method: "PATCH",
       }),
     }),
@@ -18,5 +18,5 @@ const adminApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useBlockUnblockWalletMutation, useApproveSuspendAgentMutation } =
+export const { useBlockUnblockMutation, useApproveSuspendAgentMutation } =
   adminApi;

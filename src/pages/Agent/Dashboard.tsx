@@ -1,5 +1,6 @@
 "use client";
 
+import LoadingSpinner from "@/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useGetTransactionHistoryQuery } from "@/redux/features/transaction/transaction.api";
@@ -15,25 +16,21 @@ export default function AgentDashboard() {
   const [showBalance, setShowBalance] = useState(true);
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        Loading...
-      </div>
-    );
+    return <LoadingSpinner text="Loading dashboard..." fullscreen />;
   }
 
   const balance = userInfo?.data?.wallet.balance || 0;
   const totalCashIn = transactionInfo?.data
     ? transactionInfo.data
         .filter(
-          (tx) => tx.type === "CASH_IN" && tx.initiator === userInfo?.data._id
+          (tx) => tx.type === "CASH_IN" && tx.initiator === userInfo?.data._id,
         )
         .reduce((acc, tx) => acc + tx.amount, 0)
     : 0;
   const totalCashOut = transactionInfo?.data
     ? transactionInfo.data
         .filter(
-          (tx) => tx.type === "CASH_OUT" && tx.receiver === userInfo?.data._id
+          (tx) => tx.type === "CASH_OUT" && tx.receiver === userInfo?.data._id,
         )
         .reduce((acc, tx) => acc + tx.amount, 0)
     : 0;

@@ -1,3 +1,4 @@
+import LoadingSpinner from "@/components/LoadingSpinner";
 import { useGetUserInfoQuery } from "@/redux/features/user/user.api";
 import type { TRole } from "@/types";
 import type { ComponentType } from "react";
@@ -15,7 +16,7 @@ export const withAuth = (Component: ComponentType, requiredRole: TRole) => {
     });
 
     if (isLoading) {
-      return <div>Loading...</div>;
+      return <LoadingSpinner text="Checking authentication..." fullscreen />;
     }
     console.log(data);
     console.log(data?.data?.email);

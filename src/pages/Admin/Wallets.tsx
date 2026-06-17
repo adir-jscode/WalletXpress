@@ -1,3 +1,4 @@
+import LoadingSpinner from "@/components/LoadingSpinner";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -13,9 +14,10 @@ export default function Wallets() {
   const { data: walletsData, isLoading } = useGetAllWalletsQuery();
 
   const wallets = walletsData?.data || [];
+  console.log("Wallets data:", wallets);
 
   const totalBalance = wallets.reduce((sum, w) => sum + w.balance, 0);
-  const blockedCount = wallets.filter((w) => w.isBlocked).length;
+  const blockedCount = wallets.filter((w) => w.status === "BLOCKED").length;
 
   return (
     <div className="space-y-4">
@@ -54,7 +56,7 @@ export default function Wallets() {
         </CardHeader>
         <CardContent>
           {isLoading ? (
-            <div>Loading...</div>
+            <LoadingSpinner text="Loading wallets..." fullscreen />
           ) : wallets.length === 0 ? (
             <div className="text-center text-muted-foreground">
               No wallets found
@@ -77,9 +79,11 @@ export default function Wallets() {
                   <div className="text-right">
                     <p className="font-medium">৳{wallet.balance.toFixed(2)}</p>
                     <Badge
-                      variant={wallet.isBlocked ? "destructive" : "default"}
+                      variant={
+                        wallet.status === "BLOCKED" ? "destructive" : "default"
+                      }
                     >
-                      {wallet.isBlocked ? "Blocked" : "Active"}
+                      {wallet.status === "BLOCKED" ? "Blocked" : "Active"}
                     </Badge>
                   </div>
                 </div>

@@ -1,15 +1,17 @@
 import WalletLogin from "@/assets/images/wallet-login.jpeg";
 import Logo from "@/components/logo";
 import { LoginForm } from "@/components/modules/authentication/LoginForm";
+import { useState } from "react";
 
 export default function Login() {
+  const [credentials, setCredentials] = useState({
+    phone: "",
+    password: "",
+  });
   return (
     <div className="grid min-h-svh lg:grid-cols-2 bg-white dark:bg-slate-950">
       <div className="flex flex-col gap-6 p-6 md:p-10 lg:p-12">
-        <div
-          className="flex justify-center gap-2 md:justify-start"
-          onClick={() => (window.location.href = "/")}
-        >
+        <div className="flex justify-center gap-2 md:justify-start">
           <Logo />
         </div>
 
@@ -26,47 +28,52 @@ export default function Login() {
             </div>
 
             {/* Form */}
-            <LoginForm />
+            <LoginForm
+              phone={credentials.phone}
+              password={credentials.password}
+            />
             {/* admin credentials clipboard */}
-            <div className="text-sm text-slate-500 dark:text-slate-400 p-3 border border-slate-200 dark:border-slate-700 rounded">
-              <p>
-                <strong>Admin Credentials:</strong>
-              </p>
-              <p>
-                Phone: <code>1819440126</code>
-                {/* copy phone number */}
+            <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg space-y-3">
+              <p className="font-semibold text-sm">Quick Login</p>
+
+              <div className="grid gap-2">
                 <button
-                  onClick={() => {
-                    navigator.clipboard.writeText("+8801819440126");
-                  }}
-                  className="ml-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-semibold"
+                  type="button"
+                  onClick={() =>
+                    setCredentials({
+                      phone: "+8801819440126",
+                      password: "SecurePass123!",
+                    })
+                  }
+                  className="w-full rounded-md bg-red-500 text-white py-2 text-sm font-medium hover:bg-red-600"
                 >
-                  Copy
+                  Fill Admin Credentials
                 </button>
-              </p>
-              <p>
-                Password: <code>SecurePass123!</code>
-                {/* copy password */}
+
                 <button
-                  onClick={() => {
-                    navigator.clipboard.writeText("SecurePass123!");
-                  }}
-                  className="ml-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-semibold"
+                  type="button"
+                  onClick={() =>
+                    setCredentials({
+                      phone: "+8801719182267",
+                      password: "SecurePass123!",
+                    })
+                  }
+                  className="w-full rounded-md bg-blue-500 text-white py-2 text-sm font-medium hover:bg-blue-600"
                 >
-                  Copy
+                  Fill User Credentials
                 </button>
-              </p>
-              {/* options to copy text */}
-              <div className="mt-2">
+
                 <button
-                  onClick={() => {
-                    navigator.clipboard.writeText(
-                      "Phone: +1234567890\nPassword: Admin@123",
-                    );
-                  }}
-                  className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-semibold"
+                  type="button"
+                  onClick={() =>
+                    setCredentials({
+                      phone: "+8801837730317",
+                      password: "SecurePass123!",
+                    })
+                  }
+                  className="w-full rounded-md bg-green-500 text-white py-2 text-sm font-medium hover:bg-green-600"
                 >
-                  Copy Credentials
+                  Fill Agent Credentials
                 </button>
               </div>
             </div>

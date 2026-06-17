@@ -5,7 +5,7 @@ const transactionApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getTransactionHistory: build.query<{ data: ITransaction[] }, void>({
       query: () => ({
-        url: "/transaction/transaction-history",
+        url: "/transaction/transaction-history/user",
         method: "GET",
       }),
       providesTags: ["TRANSACTION", "WALLET", "USER"],

@@ -23,6 +23,7 @@ import {
 import { authApi, useLogoutMutation } from "@/redux/features/auth/auth.api";
 import { useGetUserInfoQuery } from "@/redux/features/user/user.api";
 import { useAppDispatch } from "@/redux/hook";
+import { LayoutDashboard, LogOut, User } from "lucide-react";
 import { useNavigate } from "react-router";
 import { ModeToggle } from "./ModeToggler";
 
@@ -153,7 +154,24 @@ export default function Navbar() {
                     Account
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuContent align="end" className="w-64">
+                  <div className="px-3 py-3">
+                    <div className="font-medium">{userInfo?.data?.name}</div>
+                    <div className="text-xs text-muted-foreground">
+                      {userInfo?.data?.phone}
+                    </div>
+                  </div>
+
+                  <DropdownMenuSeparator />
+
+                  <DropdownMenuItem
+                    onSelect={() => navigate("/profile")}
+                    className="cursor-pointer"
+                  >
+                    <User className="mr-2 h-4 w-4" />
+                    Profile
+                  </DropdownMenuItem>
+
                   <DropdownMenuItem
                     onSelect={() => {
                       const dashboardPath =
@@ -162,32 +180,22 @@ export default function Navbar() {
                           : userInfo?.data.role === "USER"
                             ? "/user/dashboard"
                             : "/agent/dashboard";
+
                       navigate(dashboardPath);
                     }}
+                    className="cursor-pointer"
                   >
+                    <LayoutDashboard className="mr-2 h-4 w-4" />
                     Dashboard
                   </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onSelect={() => {
-                      const profilePath =
-                        userInfo?.data.role === "ADMIN"
-                          ? "/profile"
-                          : userInfo?.data.role === "USER"
-                            ? "/profile"
-                            : "/profile";
-                      navigate(profilePath);
-                    }}
-                  >
-                    Profile
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onSelect={() => navigate("/contact")}>
-                    Support
-                  </DropdownMenuItem>
+
                   <DropdownMenuSeparator />
+
                   <DropdownMenuItem
-                    variant="destructive"
                     onSelect={handleLogout}
+                    className="cursor-pointer text-red-600 focus:text-red-600"
                   >
+                    <LogOut className="mr-2 h-4 w-4" />
                     Logout
                   </DropdownMenuItem>
                 </DropdownMenuContent>

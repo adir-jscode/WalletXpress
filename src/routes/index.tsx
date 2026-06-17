@@ -4,8 +4,10 @@ import About from "@/pages/About";
 import Contact from "@/pages/Contact";
 import FAQ from "@/pages/FAQ";
 import Features from "@/pages/Features";
+import ForgotPassword from "@/pages/ForgotPassword";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
+
 import Pricing from "@/pages/Pricing";
 import Register from "@/pages/Register";
 import Unauthorized from "@/pages/Unauthorized";
@@ -76,6 +78,14 @@ export const router = createBrowserRouter([
     Component: Login,
     path: "/login",
   },
+  {
+    Component: ForgotPassword,
+    path: "/forgot-password",
+  },
+  // {
+  //   Component: OtpVerification,
+  //   path: "/verify-otp",
+  // },
   {
     Component: Register,
     path: "/register",

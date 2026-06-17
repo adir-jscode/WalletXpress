@@ -1,3 +1,5 @@
+import LoadingSpinner from "@/components/LoadingSpinner";
+import TransactionDetailsDialog from "@/components/TransactionDetailsDialog";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -13,6 +15,7 @@ export default function Transactions() {
   const { data: transactionsData, isLoading } = useGetAllTransactionsQuery();
 
   const transactions = transactionsData?.data || [];
+  console.log("Transactions data:", transactions);
 
   const getTransactionIcon = (type: string) => {
     switch (type) {
@@ -49,7 +52,7 @@ export default function Transactions() {
         </CardHeader>
         <CardContent>
           {isLoading ? (
-            <div>Loading...</div>
+            <LoadingSpinner text="Loading transactions..." fullscreen />
           ) : transactions.length === 0 ? (
             <div className="text-center text-muted-foreground">
               No transactions found
@@ -75,22 +78,23 @@ export default function Transactions() {
                       </p>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="font-medium">৳{tx.amount.toFixed(2)}</p>
-                    <div className="flex gap-2 mt-1">
-                      <Badge className={getStatusColor(tx.status)}>
-                        {tx.status}
-                      </Badge>
-                      {tx.fee > 0 && (
-                        <Badge variant="secondary">
-                          Fee: ৳{tx.fee.toFixed(2)}
+                  <div className="flex items-center gap-3">
+                    <TransactionDetailsDialog transaction={tx} />
+
+                    <div className="text-right">
+                      <p className="font-medium">৳{tx.amount.toFixed(2)}</p>
+
+                      <div className="flex gap-2 mt-1 justify-end flex-wrap">
+                        <Badge className={getStatusColor(tx.status)}>
+                          {tx.status}
                         </Badge>
-                      )}
-                      {tx.commission > 0 && (
-                        <Badge variant="secondary">
-                          Commission: ৳{tx.commission.toFixed(2)}
-                        </Badge>
-                      )}
+
+                        {tx.fee > 0 && (
+                          <Badge variant="secondary">
+                            Fee: ৳{tx.fee.toFixed(2)}
+                          </Badge>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>

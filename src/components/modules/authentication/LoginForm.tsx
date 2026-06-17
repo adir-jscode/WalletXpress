@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type React from "react";
+import { useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -22,50 +24,64 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 const loginSchema = z.object({
-  phone: z.string().min(11, { message: "Phone number must be 11 characters." }),
-  password: z
-    .string()
-    .min(6, { message: "Password must be at least 6 characters." }),
+  phone: z.string().min(11, {
+    message: "Phone number must be 11 characters.",
+  }),
+  password: z.string().min(6, {
+    message: "Password must be at least 6 characters.",
+  }),
 });
+
+type LoginFormProps = React.ComponentProps<"div"> & {
+  phone?: string;
+  password?: string;
+};
 
 export function LoginForm({
   className,
+  phone = "",
+  password = "",
   ...props
-}: React.ComponentProps<"div">) {
-  const form = useForm({
+}: LoginFormProps) {
+  const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      phone: "",
-      password: "",
+      phone,
+      password,
     },
   });
 
+  // 🔥 THIS FIXES AUTOFILL
+  useEffect(() => {
+    form.setValue("phone", phone);
+    form.setValue("password", password);
+  }, [phone, password, form]);
+
   const navigate = useNavigate();
   const [login] = useLoginMutation();
+
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
     try {
       const res = await login(data).unwrap();
-      console.log("LOGIN SUCCESS", res);
+
       if (res.data.role === "ADMIN") {
-        console.log("Admin login successful");
         navigate("/admin/dashboard");
-        toast.success("Login successful");
       } else if (res.data.role === "USER") {
         navigate("/user/dashboard");
-        toast.success("Login successful");
       } else {
         navigate("/agent/dashboard");
-        toast.success("Login successful");
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      toast.success("Login successful");
     } catch (error: any) {
-      toast.error(error.data.message);
-      if (error.data.message === "User is not verified") {
+      toast.error(error?.data?.message || "Login failed");
+
+      if (error?.data?.message === "User is not verified") {
         navigate("/verify", { state: data.phone });
       }
     }
   };
+
   return (
     <div className={cn("flex flex-col gap-4", className)} {...props}>
       <Card className="border-slate-200 dark:border-slate-700">
@@ -83,19 +99,6 @@ export function LoginForm({
                     <FormControl>
                       <Input
                         {...field}
-                        // value={
-                        //   field.value.startsWith("+880")
-                        //     ? field.value
-                        //     : `+880${field.value}`
-                        // }
-                        // onChange={(e) => {
-                        //   const value = e.target.value.replace(/\D/g, "");
-                        //   if (value.startsWith("880")) {
-                        //     field.onChange("+" + value);
-                        //   } else {
-                        //     field.onChange("+880" + value);
-                        //   }
-                        // }}
                         placeholder="+8801XXXXXXXXX"
                         className="h-10 rounded-lg border-slate-200 dark:border-slate-700"
                       />
@@ -104,16 +107,15 @@ export function LoginForm({
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <div className="flex items-center justify-between">
-                      <FormLabel className="text-slate-700 dark:text-slate-300 font-medium">
-                        Password
-                      </FormLabel>
-                    </div>
+                    <FormLabel className="text-slate-700 dark:text-slate-300 font-medium">
+                      Password
+                    </FormLabel>
                     <FormControl>
                       <Password
                         {...field}
@@ -125,6 +127,7 @@ export function LoginForm({
                   </FormItem>
                 )}
               />
+
               <Button
                 type="submit"
                 className="w-full h-10 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg"
