@@ -34,7 +34,6 @@ export default function AdminDashboard() {
 
   const totalBalance = wallets.reduce((sum, w) => sum + w.balance, 0);
   const totalTransactions = transactions.reduce((sum, t) => sum + t.amount, 0);
-  const blockedWallets = wallets.filter((w) => w.isBlocked).length;
 
   // Prepare chart data
   const chartData = [
@@ -89,10 +88,6 @@ export default function AdminDashboard() {
             </CardTitle>
             <TrendingUp className="h-4 w-4 text-red-600" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{blockedWallets}</div>
-            <p className="text-xs text-muted-foreground">Suspended accounts</p>
-          </CardContent>
         </Card>
       </div>
 

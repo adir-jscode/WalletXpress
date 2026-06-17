@@ -23,7 +23,8 @@ export default function AgentDashboard() {
   const totalCashIn = transactionInfo?.data
     ? transactionInfo.data
         .filter(
-          (tx) => tx.type === "CASH_IN" && tx.initiator === userInfo?.data._id,
+          (tx) =>
+            tx.type === "CASH_IN" && tx.initiator._id === userInfo?.data._id,
         )
         .reduce((acc, tx) => acc + tx.amount, 0)
     : 0;

@@ -4,7 +4,6 @@ import About from "@/pages/About";
 import Contact from "@/pages/Contact";
 import FAQ from "@/pages/FAQ";
 import Features from "@/pages/Features";
-import ForgotPassword from "@/pages/ForgotPassword";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 
@@ -78,10 +77,10 @@ export const router = createBrowserRouter([
     Component: Login,
     path: "/login",
   },
-  {
-    Component: ForgotPassword,
-    path: "/forgot-password",
-  },
+  // {
+  //   Component: ForgotPassword,
+  //   path: "/forgot-password",
+  // },
   // {
   //   Component: OtpVerification,
   //   path: "/verify-otp",

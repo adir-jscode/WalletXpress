@@ -22,7 +22,7 @@ const authApi = baseApi.injectEndpoints({
         url: "/auth/logout",
         method: "POST",
       }),
-      invalidatesTags: ["AUTH"],
+      invalidatesTags: ["USER"],
     }),
     changePassword: build.mutation<
       { success: boolean },

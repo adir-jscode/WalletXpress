@@ -1,5 +1,4 @@
 "use client";
-
 import Logo from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,6 +20,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { authApi, useLogoutMutation } from "@/redux/features/auth/auth.api";
+import { logout as logoutAction } from "@/redux/features/auth/auth.slice";
 import { useGetUserInfoQuery } from "@/redux/features/user/user.api";
 import { useAppDispatch } from "@/redux/hook";
 import { LayoutDashboard, LogOut, User } from "lucide-react";
@@ -46,9 +46,10 @@ export default function Navbar() {
   const handleLogout = async () => {
     await logout(undefined).unwrap();
 
+    dispatch(logoutAction());
     dispatch(authApi.util.resetApiState());
 
-    window.location.href = "/login";
+    window.location.href = "/";
   };
   return (
     <header className="border-b px-4 md:px-6">

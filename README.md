@@ -2,7 +2,7 @@
 
 ## Live Deployment Link
 
-https://digital-xpress-sigma.vercel.app/
+https://wallet-xpress.vercel.app/
 
 ## Project Overview
 
