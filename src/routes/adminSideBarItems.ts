@@ -3,6 +3,7 @@ import Dashboard from "@/pages/Admin/Dashboard";
 import Transactions from "@/pages/Admin/Transaction";
 import Users from "@/pages/Admin/Users";
 import Wallets from "@/pages/Admin/Wallets";
+import ChangePassword from "@/pages/ChangePassword";
 import Profile from "@/pages/Profile";
 import type { ISidebarItems } from "@/types";
 
@@ -45,6 +46,11 @@ export const adminSideBarItems: ISidebarItems[] = [
         url: "/admin/transactions",
         component: Transactions,
         //component: AdminTransactions,
+      },
+      {
+        title: "Change Password",
+        url: "/admin/change-password",
+        component: ChangePassword,
       },
     ],
   },

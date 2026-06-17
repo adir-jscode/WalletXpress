@@ -1,3 +1,4 @@
+import ChangePassword from "@/pages/ChangePassword";
 import Profile from "@/pages/Profile";
 import CashOut from "@/pages/User/CashOut";
 import UserDashboard from "@/pages/User/Dashboard";
@@ -38,6 +39,11 @@ export const userSideBarItems: ISidebarItems[] = [
         title: "History",
         url: "/user/transactions",
         component: Transactions,
+      },
+      {
+        title: "Change Password",
+        url: "/user/change-password",
+        component: ChangePassword,
       },
     ],
   },

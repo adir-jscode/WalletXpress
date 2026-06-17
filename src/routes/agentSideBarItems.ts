@@ -1,5 +1,6 @@
 import CashIn from "@/pages/Agent/CashIn";
 import AgentDashboard from "@/pages/Agent/Dashboard";
+import ChangePassword from "@/pages/ChangePassword";
 import Profile from "@/pages/Profile";
 import type { ISidebarItems } from "@/types";
 
@@ -26,6 +27,11 @@ export const agentSideBarItems: ISidebarItems[] = [
         title: "Cash-In",
         url: "/agent/cash-in",
         component: CashIn,
+      },
+      {
+        title: "Change Password",
+        url: "/agent/change-password",
+        component: ChangePassword,
       },
 
       // {

@@ -17,26 +17,23 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { useNotifications } from "@/hooks/useNotifications"; // ← add
 import { authApi, useLogoutMutation } from "@/redux/features/auth/auth.api";
 import { useGetUserInfoQuery } from "@/redux/features/user/user.api";
 import { useAppDispatch } from "@/redux/hook";
-import { Bell, ChevronDown, LayoutDashboard, LogOut, User } from "lucide-react";
-import { useState } from "react"; // ← add
+import { ChevronDown, Key, LayoutDashboard, LogOut, User } from "lucide-react";
 import { Outlet, useNavigate } from "react-router";
-import { toast } from "sonner"; // ← add (already in your project)
 
 export default function DashboardLayout() {
   const { data: userInfo } = useGetUserInfoQuery(undefined);
   const dispatch = useAppDispatch();
   const [logout] = useLogoutMutation();
-  const [unreadCount, setUnreadCount] = useState(0); // ← add
+  //const [unreadCount, setUnreadCount] = useState(0); // ← add
 
   // ── Socket notification listener ───────────────────────────────────────
-  useNotifications((notification) => {
-    toast.success(notification.message, { description: notification.title });
-    setUnreadCount((prev) => prev + 1);
-  });
+  // useNotifications((notification) => {
+  //   toast.success(notification.message, { description: notification.title });
+  //   setUnreadCount((prev) => prev + 1);
+  // });
   // ──────────────────────────────────────────────────────────────────────
 
   const handleLogout = async () => {
@@ -70,12 +67,12 @@ export default function DashboardLayout() {
 
           {/* ── Bell icon with unread badge ── */}
           <div className="relative ml-auto mr-2">
-            <Bell className="w-5 h-5 text-muted-foreground" />
+            {/* <Bell className="w-5 h-5 text-muted-foreground" />
             {unreadCount > 0 && (
               <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
                 {unreadCount > 9 ? "9+" : unreadCount}
               </span>
-            )}
+            )} */}
           </div>
 
           <Separator
@@ -149,6 +146,22 @@ export default function DashboardLayout() {
               >
                 <LayoutDashboard className="mr-2 h-4 w-4" />
                 Dashboard
+              </DropdownMenuItem>
+              {/* change password */}
+              <DropdownMenuItem
+                onClick={() => {
+                  const changePasswordPath =
+                    userInfo?.data.role === "ADMIN"
+                      ? "/admin/change-password"
+                      : userInfo?.data.role === "USER"
+                        ? "/user/change-password"
+                        : "/agent/change-password";
+                  navigate(changePasswordPath);
+                }}
+                className="cursor-pointer"
+              >
+                <Key className="mr-2 h-4 w-4" />
+                Change Password
               </DropdownMenuItem>
 
               <DropdownMenuSeparator />

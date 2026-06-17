@@ -165,7 +165,15 @@ export default function Navbar() {
                   <DropdownMenuSeparator />
 
                   <DropdownMenuItem
-                    onSelect={() => navigate("/profile")}
+                    onSelect={() => {
+                      const profilePath =
+                        userInfo?.data.role === "ADMIN"
+                          ? "/admin/profile"
+                          : userInfo?.data.role === "USER"
+                            ? "/user/profile"
+                            : "/agent/profile";
+                      navigate(profilePath);
+                    }}
                     className="cursor-pointer"
                   >
                     <User className="mr-2 h-4 w-4" />
