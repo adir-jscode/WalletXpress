@@ -1,3 +1,4 @@
+import Profile from "@/pages/Profile";
 import CashOut from "@/pages/User/CashOut";
 import UserDashboard from "@/pages/User/Dashboard";
 import SendMoney from "@/pages/User/SendMoney";
@@ -12,6 +13,11 @@ export const userSideBarItems: ISidebarItems[] = [
         title: "Overview",
         url: "/user/dashboard",
         component: UserDashboard,
+      },
+      {
+        title: "Profile",
+        url: "/user/profile",
+        component: Profile,
       },
     ],
   },

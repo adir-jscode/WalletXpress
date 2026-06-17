@@ -119,7 +119,15 @@ export default function DashboardLayout() {
               <DropdownMenuSeparator />
 
               <DropdownMenuItem
-                onClick={() => navigate("/profile")}
+                onClick={() => {
+                  const profilePath =
+                    userInfo?.data.role === "ADMIN"
+                      ? "/admin/profile"
+                      : userInfo?.data.role === "USER"
+                        ? "/user/profile"
+                        : "/agent/profile";
+                  navigate(profilePath);
+                }}
                 className="cursor-pointer"
               >
                 <User className="mr-2 h-4 w-4" />

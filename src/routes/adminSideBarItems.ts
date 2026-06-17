@@ -3,6 +3,7 @@ import Dashboard from "@/pages/Admin/Dashboard";
 import Transactions from "@/pages/Admin/Transaction";
 import Users from "@/pages/Admin/Users";
 import Wallets from "@/pages/Admin/Wallets";
+import Profile from "@/pages/Profile";
 import type { ISidebarItems } from "@/types";
 
 export const adminSideBarItems: ISidebarItems[] = [
@@ -13,6 +14,11 @@ export const adminSideBarItems: ISidebarItems[] = [
         title: "Overview",
         url: "/admin/dashboard",
         component: Dashboard,
+      },
+      {
+        title: "Profile",
+        url: "/admin/profile",
+        component: Profile,
       },
     ],
   },

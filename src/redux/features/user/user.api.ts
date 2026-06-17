@@ -8,19 +8,32 @@ const userApi = baseApi.injectEndpoints({
         url: "/user/users",
         method: "GET",
       }),
+      providesTags: ["USER"],
     }),
+
     getUserInfo: build.query<{ data: IUser }, void>({
       query: () => ({
         url: "/user/me",
         method: "GET",
       }),
-      providesTags: ["USER", "WALLET", "TRANSACTION"],
+      providesTags: ["USER"],
     }),
+
     getAllAgents: build.query<{ data: IUser[] }, void>({
       query: () => ({
         url: "/user/agents",
         method: "GET",
       }),
+      providesTags: ["USER"],
+    }),
+
+    updateUser: build.mutation({
+      query: (data) => ({
+        url: "/user/update-profile",
+        method: "PUT",
+        data, // ✅ Axios uses data
+      }),
+      invalidatesTags: ["USER"],
     }),
   }),
 });
@@ -29,4 +42,5 @@ export const {
   useGetAllUsersQuery,
   useGetAllAgentsQuery,
   useGetUserInfoQuery,
+  useUpdateUserMutation,
 } = userApi;

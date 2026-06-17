@@ -8,12 +8,14 @@ const adminApi = baseApi.injectEndpoints({
         url: `/admin/block-user/${id}`,
         method: "PATCH",
       }),
+      invalidatesTags: ["USER"],
     }),
     approveSuspendAgent: build.mutation<{ data: IUser }, { id: string }>({
       query: ({ id }) => ({
         url: `/admin/approve-suspend/${id}`,
         method: "PATCH",
       }),
+      invalidatesTags: ["USER"],
     }),
   }),
 });

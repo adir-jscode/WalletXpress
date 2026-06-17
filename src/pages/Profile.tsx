@@ -1,7 +1,16 @@
 "use client";
 
+import LoadingSpinner from "@/components/LoadingSpinner";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -16,28 +25,28 @@ import {
   useUpdateUserMutation,
 } from "@/redux/features/user/user.api";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Mail, MapPin, Phone, ShieldCheck, Wallet } from "lucide-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import z from "zod";
+import { z } from "zod";
 
 const profileSchema = z.object({
-  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
-  email: z.string().email({ message: "Please enter a valid email address." }),
-  phone: z
-    .string()
-    .min(11, { message: "Phone number must be at least 11 characters." }),
-  address: z
-    .string()
-    .min(5, { message: "Address must be at least 5 characters." }),
-  nid: z.string().length(10, { message: "NID must be exactly 10 characters." }),
+  name: z.string().min(2),
+  email: z.string().email(),
+  phone: z.string().min(11),
+  address: z.string().min(5),
+  nid: z.string().min(5),
 });
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
 
 export default function Profile() {
-  const { data: userInfo, isLoading } = useGetUserInfoQuery(undefined);
-  const [updateUser, { isLoading: updating }] = useUpdateUserMutation();
+  const { data: userData, isLoading } = useGetUserInfoQuery();
+
+  const [updateUser, { isLoading: isUpdating }] = useUpdateUserMutation();
+
+  const user = userData?.data;
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
@@ -51,59 +60,156 @@ export default function Profile() {
   });
 
   useEffect(() => {
-    if (userInfo?.data) {
+    if (user) {
       form.reset({
-        name: userInfo.data.name,
-        email: userInfo.data.email,
-        phone: userInfo.data.phone,
-        address: userInfo.data.address,
-        nid: userInfo.data.nid,
+        name: user.name || "",
+        email: user.email || "",
+        phone: user.phone || "",
+        address: user.address || "",
+        nid: user.nid || "",
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userInfo]);
+  }, [user, form]);
 
   const onSubmit = async (values: ProfileFormValues) => {
     try {
+      console.log("Submitting profile update with values:", values);
       await updateUser(values).unwrap();
-      toast.success("Profile updated successfully.");
-    } catch (error: any) {
-      toast.error(error?.data?.message || "Unable to update profile.");
+
+      toast.success("Profile updated successfully");
+    } catch (error) {
+      toast.error("Failed to update profile");
+      console.error("Profile update error", error);
     }
   };
 
   if (isLoading) {
-    return (
-      <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="rounded-xl border border-border p-8 shadow-sm">
-          <p className="text-sm text-muted-foreground">Loading profile...</p>
-        </div>
-      </div>
-    );
+    return <LoadingSpinner text="Loading profile..." fullscreen />;
   }
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6">
-      <div className="space-y-2">
-        <p className="text-sm uppercase tracking-[0.3em] text-primary">
-          Profile
-        </p>
-        <h1 className="text-3xl font-bold">Edit Your Profile</h1>
-        <p className="text-muted-foreground">
-          Update your account details and keep your profile information current.
-        </p>
-      </div>
+    <div className="space-y-6">
+      {/* Profile Summary */}
+
       <Card>
+        <CardContent className="pt-6">
+          <div className="flex flex-col md:flex-row gap-6 items-center">
+            <Avatar className="h-20 w-20">
+              <AvatarFallback className="text-xl font-bold">
+                {user?.name?.charAt(0)?.toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+
+            <div className="flex-1">
+              <h2 className="text-2xl font-bold">{user?.name}</h2>
+
+              <p className="text-muted-foreground">{user?.email}</p>
+
+              <div className="flex flex-wrap gap-2 mt-3">
+                <Badge>{user?.role}</Badge>
+
+                <Badge variant={user?.isVerified ? "default" : "secondary"}>
+                  {user?.isVerified ? "Verified" : "Unverified"}
+                </Badge>
+
+                {user?.approvalStatus && (
+                  <Badge variant="outline">{user.approvalStatus}</Badge>
+                )}
+
+                <Badge
+                  variant={
+                    user?.isActive === "ACTIVE" ? "default" : "destructive"
+                  }
+                >
+                  {user?.isActive}
+                </Badge>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Account Information */}
+
+      <div className="grid gap-6 lg:grid-cols-3">
+        <Card className="lg:col-span-1">
+          <CardHeader>
+            <CardTitle>Account Information</CardTitle>
+          </CardHeader>
+
+          <CardContent className="space-y-4">
+            <div className="flex items-center gap-3">
+              <Mail className="h-4 w-4" />
+              <span>{user?.email}</span>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <Phone className="h-4 w-4" />
+              <span>{user?.phone}</span>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <MapPin className="h-4 w-4" />
+              <span>{user?.address}</span>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <ShieldCheck className="h-4 w-4" />
+              <span>NID: {user?.nid}</span>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Wallet Information */}
+
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle>Wallet Information</CardTitle>
+            <CardDescription>Current wallet details</CardDescription>
+          </CardHeader>
+
+          <CardContent>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="flex items-center gap-3">
+                <Wallet className="h-5 w-5" />
+
+                <div>
+                  <p className="text-sm text-muted-foreground">Balance</p>
+
+                  <p className="text-3xl font-bold">
+                    ৳ {user?.wallet?.balance ?? 0}
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <p className="text-sm text-muted-foreground">Wallet Status</p>
+
+                <Badge className="mt-2">{user?.wallet?.status}</Badge>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Edit Profile */}
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Edit Profile</CardTitle>
+          <CardDescription>Update your personal information</CardDescription>
+        </CardHeader>
+
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <div className="grid gap-5 md:grid-cols-2">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <div className="grid md:grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Name</FormLabel>
+                      <FormLabel>Full Name</FormLabel>
                       <FormControl>
                         <Input {...field} />
                       </FormControl>
@@ -111,6 +217,7 @@ export default function Profile() {
                     </FormItem>
                   )}
                 />
+
                 <FormField
                   control={form.control}
                   name="email"
@@ -118,14 +225,13 @@ export default function Profile() {
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input {...field} type="email" />
+                        <Input {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-              </div>
-              <div className="grid gap-5 md:grid-cols-2">
+
                 <FormField
                   control={form.control}
                   name="phone"
@@ -139,12 +245,13 @@ export default function Profile() {
                     </FormItem>
                   )}
                 />
+
                 <FormField
                   control={form.control}
-                  name="address"
+                  name="nid"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Address</FormLabel>
+                      <FormLabel>NID</FormLabel>
                       <FormControl>
                         <Input {...field} />
                       </FormControl>
@@ -153,12 +260,13 @@ export default function Profile() {
                   )}
                 />
               </div>
+
               <FormField
                 control={form.control}
-                name="nid"
+                name="address"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>NID</FormLabel>
+                    <FormLabel>Address</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -166,8 +274,9 @@ export default function Profile() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" disabled={updating}>
-                {updating ? "Saving..." : "Save Changes"}
+
+              <Button type="submit" disabled={isUpdating}>
+                {isUpdating ? "Updating..." : "Update Profile"}
               </Button>
             </form>
           </Form>
